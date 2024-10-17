@@ -27,14 +27,18 @@ The `asar` R package is a tool intended to improve and streamline the workflows 
 
 This tutorial is an extension of the example presented on the [home page](https://nmfs-ost.github.io/asar/).
 
-## TLDR Video
+## TLDR
 
-Below is a shortened demonstration of what is in this tutorial:
+Below is a shortened demonstration of some of the content in this tutorial:
 
 <iframe width="640" height="360" src="https://youtube.com/embed/Q8XJTTkjcts?autoplay&end=1577&start=1200 " frameborder="0" allowfullscreen></iframe>
 
 
 ## Background
+
+In this tutorial, you will be working to recreate the 2023 Petral sole stock assessment report. The materials you might need such as example data can be found [here](https://github.com/nmfs-ost/asar-demo/tree/main/data). Additionally, to check your work, there is an [additional folder](https://github.com/nmfs-ost/asar-demo/tree/main/stock_assessment_reports) containing the files that should be produced if you want to recreate this example.
+
+### Species Background
 
 Petrale sole is a right-eyed flounder ranging from the western Gulf of Alaska to the Coronado Islands in northern Baja California. It is often referred to as brill, California sole, Jordan's flounder, cape sole, and other additional common names. The stock has consistently been the most commercially valuable flatfish in the California Current Ecosystem and has been sought after since the late 19th century. This stock was last assessed in 2023 by NOAA Fisheries Northwest Fisheries Science Center. The following example will recreate the [stock assessment report](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) published by the Pacific Fisheries Management Council (PFMC). Additional assessments from the PFMC can be found online [here](https://www.pcouncil.org/stock-assessments-star-reports-stat-reports-rebuilding-analyses-terms-of-reference/groundfish-stock-assessment-documents/).
 
@@ -238,7 +242,7 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 
 ## Figure and Table Chunks
 
-In the tables.qmd and figures.qmd quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend not to, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
+In the `tables.qmd` and `figures.qmd` quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend not to, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
 
 Here is an example:
 
@@ -255,5 +259,6 @@ satf::plot_recruitment(dat = 'C:/Users/samantha.schiano/Documents/asar_live_demo
 
 You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply madke changes to the sentence(s) between the quotation marks.
 
-## Additional Helpful Tips
+## Tips
+
 
