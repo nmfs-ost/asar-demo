@@ -261,24 +261,68 @@ framework.</p>
   model_results = &quot;petrale_convert_output.csv&quot;, # converted model output
 )</code></pre>
 </div>
+<div id="section-create_template-customizations" class="section level2">
+<h2>Create_template Customizations</h2>
+<p>There are a variety of ways to customize the default template that
+allows the analyst to expand or change their report as needed.</p>
+<div id="section-affiliation-formatting" class="section level3">
+<h3>Affiliation Formatting</h3>
+<p>The user has the option to select multiple ways to report
+affiliations of assessment authors. The default is a “simple”
+affiliation which only sites the institution that the author(s) is
+associated with negating the address afterwards. All other affiliations
+will include each author’s institution name and address.</p>
+<pre><code>author:
+  - name: &#39;Ian G. Taylor&#39;
+    affiliations:
+      - name: &#39;NOAA Fisheries Northwest Fisheries Science Center&#39;
+        address: &#39;2725 Montlake Boulevard East&#39;
+        city: &#39;Seattle&#39;
+        state: &#39;WA&#39;
+        postal-code: &#39;98112-2097&#39;</code></pre>
+<p>The option to remove affiliation altogether is present by setting
+<code>include_affiliation = FALSE</code>.</p>
+<p>Note: While we have made efforts to create an extensive list of
+assessment authors across NOAA, there may be instances where you or a
+colleague does not have their associated affiliation since they are not
+in our database. In this case, you can submit an <a
+href="https://github.com/nmfs-ost/asar/issues/19">issue here</a> and you
+will be added as soon as possible.</p>
+</div>
+<div id="section-parameterization" class="section level3">
+<h3>Parameterization</h3>
+<p>The skeleton is by default parameterized to allow the user to
+refrence commonly used terms or quanitites. The default parameters are
+species, office, and region (is applicable).</p>
+<p>Two arguments in the function allow the user to add more parameters:
+- <code>param_names</code> - <code>param_values</code></p>
+<p>To use these parameters, use the following notation while writing
+text:</p>
+<pre><code>&#39;r params$species`</code></pre>
+</div>
+<div id="section-section-customizations" class="section level3">
+<h3>Section Customizations</h3>
+</div>
+</div>
 <div id="section-what-to-expect" class="section level2">
 <h2>What to expect</h2>
-<ol style="list-style-type: decimal">
-<li>During processing, you will see progress for the template being
-built in the R console. A message is displayed that let’s you know where
-the template was saved and to fill out the template.</li>
-</ol>
+<div id="section-skeleton-pop-up" class="section level3">
+<h3>Skeleton Pop-up</h3>
+<p>During processing, you will see progress for the template being built
+in the R console. A message is displayed that let’s you know where the
+template was saved and to fill out the template.</p>
 <p><code>asar</code> is only a partially automated tool that still
 requires the analyst to complete the bulk of the content in the report.
 Future release will allow the user to call on old assessments that were
 made using <code>asar::create_template</code>, so only minor adjustments
 will be made as needed by the current assessment.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>There will be a series of quarto (.qmd) files along with some others
+</div>
+<div id="section-sections" class="section level3">
+<h3>Sections</h3>
+<p>There will be a series of quarto (.qmd) files along with some others
 generated with the folder. The user will not need to modify the
 ‘skeleton.qmd’, but all other quarto files will need to be filled
-in.</li>
-</ol>
+in.</p>
 <p><img src="images/example-pop-up.png" /></p>
 <p>Each section quarto file contains pre-built heading tags and
 subsections with details indicating what the user should touch on for
@@ -296,9 +340,36 @@ will be added in the order listed)</li>
 </ul>
 <pre><code>new_section = &quot;Management&quot;
 section_location = &quot;after-modeling_approach&quot;</code></pre>
-<ol start="3" style="list-style-type: decimal">
-<li></li>
-</ol>
+</div>
+</div>
+<div id="section-rendering" class="section level2">
+<h2>Rendering</h2>
+<p>After filling out all sections (and leaving ones that are not
+applicable with a blanket statement), it is time to produce the pdf
+report. User should click the ‘render’ button at the top of the script
+when using R studio or run the following code in their
+<strong>terminal</strong>:</p>
+<pre><code>quarto render SAR_USWC_Petrale_sole_skeleton.qmd</code></pre>
+<p><img src="images/example-pop-up-highlight.png" /></p>
+</div>
+<div id="section-figure-and-table-chunks" class="section level2">
+<h2>Figure and Table Chunks</h2>
+<p>In the tables.qmd and figures.qmd quarto files located in your
+folder, there will be a series of pre-made tables and figures that
+includes pre-written generic captions and alternative text. You are able
+to include or not include these objects at will. We recommend not to,
+but if a table or figure doesn’t apply, you are able to prevent the
+object from being added to the report by changing the option of
+<strong>eval</strong> to false.</p>
+<p>Here is an example:</p>
+<p>You can also adjust figure captions and alternative text from the
+arguments <code>fig-cap</code> and <code>fig-alt</code>. These two areas
+contain pre-generated generic text that applies to the table/figure. To
+edit, simply madke changes to the sentence(s) between the quotation
+marks.</p>
+</div>
+<div id="section-additional-helpful-tips" class="section level2">
+<h2>Additional Helpful Tips</h2>
 <p>
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)

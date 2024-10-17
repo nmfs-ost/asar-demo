@@ -146,13 +146,69 @@ asar::create_template(
 )
 ```
 
+## Create_template Customizations
+
+There are a variety of ways to customize the default template that allows the analyst to expand or change their report as needed. 
+
+### Affiliation Formatting
+
+The user has the option to select multiple ways to report affiliations of assessment authors. The default is a "simple" affiliation which only sites the institution that the author(s) is associated with negating the address afterwards. All other affiliations will include each author's institution name and address.
+
+```
+author:
+  - name: 'Ian G. Taylor'
+    affiliations:
+      - name: 'NOAA Fisheries Northwest Fisheries Science Center'
+        address: '2725 Montlake Boulevard East'
+        city: 'Seattle'
+        state: 'WA'
+        postal-code: '98112-2097'
+```
+
+The option to remove affiliation altogether is present by setting
+`include_affiliation = FALSE`.
+
+Note: While we have made efforts to create an extensive list of assessment authors across NOAA, there may be instances where you or a colleague does not have their associated affiliation since they are not in our database. In this case, you can submit an [issue here](https://github.com/nmfs-ost/asar/issues/19) and you will be added as soon as possible.
+
+### Parameterization
+
+The skeleton is by default parameterized to allow the user to reference commonly used terms or quantities. The default parameters are species, office, and region (is applicable).
+
+Two arguments in the function allow the user to add more parameters:
+  - `param_names`
+  - `param_values`
+  
+To use these parameters, use the following notation while writing text:
+```
+'r params$species`
+```
+Additional parameters can be added using the argument:
+
+  - `param_names`
+  - `param_values`
+
+For including more than one new parameter please list them using `c()`.
+For example:
+
+```r
+param_names = c("fleet1", "fleet2", )
+```
+
+### Section Customizations
+
+
+
 ## What to expect
 
-1) During processing, you will see progress for the template being built in the R console. A message is displayed that let's you know where the template was saved and to fill out the template.
+### Skeleton Pop-up
+
+During processing, you will see progress for the template being built in the R console. A message is displayed that let's you know where the template was saved and to fill out the template.
 
 `asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future release will allow the user to call on old assessments that were made using `asar::create_template`, so only minor adjustments will be made as needed by the current assessment.
 
-2) There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in. 
+### Sections
+
+There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in. 
 
 ![](images/example-pop-up.png)
 
@@ -170,5 +226,34 @@ new_section = "Management"
 section_location = "after-modeling_approach"
 ```
 
-3) 
+## Rendering
+
+After filling out all sections (and leaving ones that are not applicable with a blanket statement), it is time to produce the pdf report. User should click the 'render' button at the top of the script when using R studio or run the following code in their **terminal**:
+
+```
+quarto render SAR_USWC_Petrale_sole_skeleton.qmd
+```
+
+![](images/example-pop-up-highlight.png)
+
+## Figure and Table Chunks
+
+In the tables.qmd and figures.qmd quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend not to, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
+
+Here is an example:
+
+```{r}
+#| label: 'recruitment'
+#| echo: false 
+#| warning: false 
+#| eval: false 
+#| fig-cap: "Recruitment over time of this species in the region."
+#| fig-alt: "Graph of recruitment over time. Data can be found at the species folder at the Pacific Fisheries Management Council."
+satf::plot_recruitment(dat = 'C:/Users/samantha.schiano/Documents/asar_live_demo/Report.sso', model = 'SS3')
+```
+
+
+You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply madke changes to the sentence(s) between the quotation marks.
+
+## Additional Helpful Tips
 
