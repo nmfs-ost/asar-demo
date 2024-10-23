@@ -64,7 +64,7 @@ Tip: if a working directory is not set manually, the function will default to th
 
 This script will be the way you execute the primary functions of this package and create a template for a stock assessment report. It can be helpful to save this script for later use or future assessments.
 
-![](new_script.png)
+![](images/new_script.png)
 
 ## Relative Paths
 
@@ -206,7 +206,7 @@ By default, the template from `asar` includes the recommended standard guideline
 
 For example, if the user only wants to write a stock assessment report update that contains new data and the results. Run the following code:
 
-```r
+```{r, echo=TRUE, eval=FALSE, stylelines=list(c(15), "highlight")}
 asar::create_template(
   format = "pdf",
   office = "NWFSC",
