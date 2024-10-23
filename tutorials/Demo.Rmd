@@ -239,11 +239,11 @@ During processing, you will see progress for the template being built in the R c
 
 There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in. 
 
-![](images/example-pop-up.png)
+![](example-pop-up.png)
 
 Each section quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section. 
 
-![](images/example-section.png)
+![](example-section.png)
 
 The optional addition of new sections as indicated by the user in the `create_template` function will be blank with the exception of a pre-built header with the new section name. 
 
@@ -263,7 +263,7 @@ After filling out all sections (and leaving ones that are not applicable with a 
 quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 ```
 
-![](images/example-pop-up-highlight.png)
+![](example-pop-up-highlight.png)
 
 ## Figure and Table Chunks
 
