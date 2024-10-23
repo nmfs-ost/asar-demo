@@ -4,6 +4,7 @@ output:
   learnr::tutorial:
     progressive: true
     allow_skip: true
+    css: css/highlight.css
 runtime: shiny_prerendered
 description: >
   Learn how to efficiently use the asar R package and its associated functions 
@@ -65,6 +66,8 @@ Tip: if a working directory is not set manually, the function will default to th
 This script will be the way you execute the primary functions of this package and create a template for a stock assessment report. It can be helpful to save this script for later use or future assessments.
 
 ![](images/new_script.png)
+
+
 
 ## Relative Paths
 
@@ -150,7 +153,7 @@ asar::create_template(
 )
 ```
 
-## Create_template Customizations
+## Create_template Customizations {.tabset}
 
 There are a variety of ways to customize the default template that allows the analyst to expand or change their report as needed. 
 
@@ -202,11 +205,13 @@ param_names = c("fleet1", "fleet2", )
 
 By default, the template from `asar` includes the recommended standard guidelines for a NOAA stock assessment as agreed upon by a Steering Committee of NOAA assessment scientists. Details about what to include within each section/subsection are located in the default templates using an HTML comment. This means that the text will not be rendered with the rest of the document. Users can remove this text when writing the document if they wish.
 
-`asar` offers a variety of customization features including the option to select a subset of sections using the argument `custom=TRUE` and `custom_sections` or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`. 
+`asar` offers a variety of customization features by using the argument `custom=TRUE`. These customizations can include the option to select a subset of sections using the argument `custom_sections` or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`. 
 
-For example, if the user only wants to write a stock assessment report update that contains new data and the results. Run the following code:
+For example, if the user only wants to write a stock assessment report update that contains new data and the results. 
 
-```{r, echo=TRUE, eval=FALSE, stylelines=list(c(15), "highlight")}
+Here is an application for customizing a template:
+
+```{r echo=TRUE, eval=FALSE}
 asar::create_template(
   format = "pdf",
   office = "NWFSC",
@@ -221,13 +226,14 @@ asar::create_template(
   param_values = c("North fleet", "South fleet"),
   resdir = here(),
   model_results = "petrale_convert_output.csv",
+  custom = TRUE,
+  custom_sections = c("data", "assessment", "discussion"),
   add_section = "Harvest Control Rules",
-  section_location = "after-results"
+  section_location = "after-assessment"
 )
 ```
 
-
-## What to expect
+## What to expect {.tabset}
 
 ### Skeleton Pop-up
 
@@ -239,11 +245,11 @@ During processing, you will see progress for the template being built in the R c
 
 There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in. 
 
-![](example-pop-up.png)
+![](images/example-pop-up.png)
 
 Each section quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section. 
 
-![](example-section.png)
+![](images/example-section.png)
 
 The optional addition of new sections as indicated by the user in the `create_template` function will be blank with the exception of a pre-built header with the new section name. 
 
@@ -263,7 +269,7 @@ After filling out all sections (and leaving ones that are not applicable with a 
 quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 ```
 
-![](example-pop-up-highlight.png)
+![](images/example-pop-up-highlight.png)
 
 ## Figure and Table Chunks
 
@@ -280,7 +286,6 @@ Here is an example:
 #| fig-alt: "Graph of recruitment over time. Data can be found at the species folder at the Pacific Fisheries Management Council."
 satf::plot_recruitment(dat = 'C:/Users/samantha.schiano/Documents/asar_live_demo/Report.sso', model = 'SS3')
 ```
-
 
 You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply make changes to the sentence(s) between the quotation marks.
 

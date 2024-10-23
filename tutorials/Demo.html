@@ -96,6 +96,7 @@ if (window.hljs) {
 </style>
 <!-- end tabsets -->
 
+<link rel="stylesheet" href="css/highlight.css" type="text/css" />
 
 </head>
 
@@ -273,8 +274,9 @@ framework.</p>
   model_results = &quot;petrale_convert_output.csv&quot; # converted model output
 )</code></pre>
 </div>
-<div id="section-create_template-customizations" class="section level2">
-<h2>Create_template Customizations</h2>
+<div id="section-create_template-customizations"
+class="section level2 tabset">
+<h2 class="tabset">Create_template Customizations</h2>
 <p>There are a variety of ways to customize the default template that
 allows the analyst to expand or change their report as needed.</p>
 <div id="section-affiliation-formatting" class="section level3">
@@ -329,15 +331,16 @@ about what to include within each section/subsection are located in the
 default templates using an HTML comment. This means that the text will
 not be rendered with the rest of the document. Users can remove this
 text when writing the document if they wish.</p>
-<p><code>asar</code> offers a variety of customization features
-including the option to select a subset of sections using the argument
-<code>custom=TRUE</code> and <code>custom_sections</code> or add a new
-sections within the default (or custom selection) using the arguments
-<code>new_section</code> and <code>section_location</code>.</p>
+<p><code>asar</code> offers a variety of customization features by using
+the argument <code>custom=TRUE</code>. These customizations can include
+the option to select a subset of sections using the argument
+<code>custom_sections</code> or add a new sections within the default
+(or custom selection) using the arguments <code>new_section</code> and
+<code>section_location</code>.</p>
 <p>For example, if the user only wants to write a stock assessment
-report update that contains new data and the results. Run the following
-code:</p>
-<pre class="r"><code>asar::create_template(
+report update that contains new data and the results.</p>
+<p>Here is an application for customizing a template:</p>
+<pre class="r highlight"><code>asar::create_template(
   format = &quot;pdf&quot;,
   office = &quot;NWFSC&quot;,
   region = &quot;U.S. West Coast&quot;,
@@ -351,8 +354,10 @@ code:</p>
   param_values = c(&quot;North fleet&quot;, &quot;South fleet&quot;),
   resdir = here(),
   model_results = &quot;petrale_convert_output.csv&quot;,
+  custom = TRUE,
+  custom_sections = c(&quot;data&quot;, &quot;assessment&quot;, &quot;discussion&quot;),
   add_section = &quot;Harvest Control Rules&quot;,
-  section_location = &quot;after-results&quot;
+  section_location = &quot;after-assessment&quot;
 )</code></pre>
 </div>
 </div>
