@@ -66,10 +66,6 @@ This script will be the way you execute the primary functions of this package an
 
 ![](images/new_script.png)
 
-```{r echo=FALSE}
-knitr::include_graphics("images/new_script.png")
-```
-
 ## Relative Paths
 
 It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here`after setting the working directory. 
@@ -210,7 +206,7 @@ By default, the template from `asar` includes the recommended standard guideline
 
 For example, if the user only wants to write a stock assessment report update that contains new data and the results. Run the following code:
 
-```r
+```{r, echo=TRUE, eval=FALSE, stylelines=list(c(15), "highlight")}
 asar::create_template(
   format = "pdf",
   office = "NWFSC",
