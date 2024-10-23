@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "locale": "en_US",
+  "platform": "4.4.1",
+  "metadata": {
+    "appmode": "static",
+    "primary_rmd": null,
+    "primary_html": "tutorials/Demo.html",
+    "content_category": null,
+    "has_parameters": false
+  },
+  "packages": null,
+  "files": {
+    "data/petrale_demo.R": {
+      "checksum": "c498cabce6d2ac059f000c326fe0c2b5"
+    },
+    "data/Report.sso": {
+      "checksum": "2f5565a5ab098e6045de335873b543d1"
+    },
+    "Disclaimer.md": {
+      "checksum": "ebcea8231336d3c9dffdc1ff2c74d75b"
+    },
+    "images/noaa-fisheries-rgb-2line-horizontal-small.png": {
+      "checksum": "7db9949f681f218e5f5c60c21a79e236"
+    },
+    "images/Readme.md": {
+      "checksum": "c491ccf0940c7d72edf9f6d793b03e10"
+    },
+    "LICENSE": {
+      "checksum": "473a7959b44c2f42c375d904305b6307"
+    },
+    "LICENSE.md": {
+      "checksum": "1f07b9d9137c218a2833895224a0bb80"
+    },
+    "README.md": {
+      "checksum": "46adfac93ef6c7fca8432a0294d5795c"
+    },
+    "status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf": {
+      "checksum": "bac83858c9fdc0385d79036103c4b4cc"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/acknowledgments.qmd": {
+      "checksum": "db3475e86a80bd4fe678fa3646e4e621"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/appendix.qmd": {
+      "checksum": "4ab2d06a35a39d1e7fe21d5dc5e71f0e"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/assessment_glossaries.tex": {
+      "checksum": "5db5f320f9946baec56e5a01b968737c"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/data.qmd": {
+      "checksum": "c5bad643ef1e0b3e5bebed99a5b3a75f"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/discussion.qmd": {
+      "checksum": "adceab42a00f50ec0b7cf3c40f5c493e"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/executive_summary.qmd": {
+      "checksum": "53d9d6159ddaa930b900f4be44e52ebb"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/figures.qmd": {
+      "checksum": "160cbcae6319628143eb2e6c9219dc5e"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/introduction.qmd": {
+      "checksum": "7dc8a5ceff763e3c570ab58f42142d8b"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/modeling_approach.qmd": {
+      "checksum": "2e56adf32ad04c0ab33ed952553be1c1"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/petrale_output_ex.rdat": {
+      "checksum": "ca8bcd1ceb7b06b22625542e502d7c90"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/petrale_output_ex.Rdata": {
+      "checksum": "ca8bcd1ceb7b06b22625542e502d7c90"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/Petrale_sole_std_res_2023.csv": {
+      "checksum": "841fb80e51773d200eecccfc9c3e55a4"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/projections.qmd": {
+      "checksum": "70d3fbbb8a037f6a54acdbd4f5b98cdd"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/references.qmd": {
+      "checksum": "5d8cff6e4bd90a0f8d860439d174b287"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/results.qmd": {
+      "checksum": "c27444abf8b3fa9a6e317e0d2fe6d23d"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/SAR_USWC_Petrale_sole_skeleton.pdf": {
+      "checksum": "e4330a5265b95bbbc879c15106b7fa7d"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/SAR_USWC_Petrale_sole_skeleton.qmd": {
+      "checksum": "5a330815df69fee5a086da42decc513e"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/support_files/_titlepage.tex": {
+      "checksum": "8a9f9caf8b69cc933251cacfa0a28073"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/support_files/before-body.tex": {
+      "checksum": "cdd245a9f723ccc43817eae346dc918b"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/support_files/in-header.tex": {
+      "checksum": "89f43eecd75daad98e3c50148a1b7490"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/support_files/Petrale_sole.png": {
+      "checksum": "513ef1e510d41816ce36fa99ae028d7a"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/support_files/us_doc_logo.png": {
+      "checksum": "1c4479d5482fad6067ab57376adb273b"
+    },
+    "stock_assessment_reports/NWFSC/Petrale sole/U.S. West Coast/2023/tables.qmd": {
+      "checksum": "8be5cf53c24dbaeeb5854868a6223bfd"
+    },
+    "tutorials/Demo.html": {
+      "checksum": "261c817cc769d278bb145e0f45cd75a2"
+    },
+    "tutorials/Demo.Rmd": {
+      "checksum": "5f4f125facebf498b7e503ca3080b520"
+    },
+    "tutorials/images/example-pop-up-highlight.PNG": {
+      "checksum": "ce451babc7c00a50ae988f1f0f4313fd"
+    },
+    "tutorials/images/example-pop-up.PNG": {
+      "checksum": "301461bf1dad994fa73fdbceb7c21402"
+    },
+    "tutorials/images/example-section.PNG": {
+      "checksum": "e9133070dc8ccddec4a0c8f871957f3f"
+    },
+    "tutorials/images/new_script.PNG": {
+      "checksum": "71f2b4525c8d36369baebd95b9441011"
+    },
+    "tutorials/styles.css": {
+      "checksum": "03e3b3b6b261d53c31dc92a9ff5dedcb"
+    }
+  },
+  "users": null
+}

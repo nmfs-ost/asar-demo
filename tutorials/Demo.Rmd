@@ -48,7 +48,7 @@ Petrale sole is a right-eyed flounder ranging from the western Gulf of Alaska to
 
 To begin please download the following packages
 
-```{r echo=TRUE, eval=FALSE}
+```r
 install.packages("remotes")
 remotes::install_github("nmfs-ost/asar")
 remotes::install_github("nmfs-ost/satf")
@@ -66,11 +66,15 @@ This script will be the way you execute the primary functions of this package an
 
 ![](images/new_script.png)
 
+```{r echo=FALSE}
+knitr::include_graphics("images/new_script.png")
+```
+
 ## Relative Paths
 
 It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here`after setting the working directory. 
 
-```
+```r
 install.packages("here")
 here::here()
 ```
@@ -79,7 +83,7 @@ The user can now designate paths within the folder containing the 'here' file. N
 
 Example:
 
-```
+```r
 output <- load(here::here("data", "Report.sso))
 ```
 
@@ -97,7 +101,7 @@ We recommend converting your output file outside of the create_template function
 
 1) (Recommended) Save the output as a .csv then reload into your R environment 
 
-```{r, include=TRUE, eval=FALSE}
+```r
 asar::convert_output(
   output_file = "Report.sso",
   outdir = getwd(), # or wherever you saved the example output file
@@ -110,7 +114,7 @@ asar::convert_output(
 
 2) Save as an object in your environment
 
-```{r, include=TRUE, eval=FALSE}
+```r
 output <- asar::convert_output(
   output_file = "Report.sso",
   outdir = getwd(),
@@ -132,7 +136,7 @@ Recommended minimum arguments:
   - spp_latin
   - year (if different than the current year)
   
-```{r, include=TRUE, eval=FALSE}
+```r
 asar::create_template(
   format = "pdf",
   office = "NWFSC",
@@ -146,7 +150,7 @@ asar::create_template(
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
   resdir = here(), # indicate where the model output is located
-  model_results = "petrale_convert_output.csv", # converted model output
+  model_results = "petrale_convert_output.csv" # converted model output
 )
 ```
 
@@ -158,7 +162,7 @@ There are a variety of ways to customize the default template that allows the an
 
 The user has the option to select multiple ways to report affiliations of assessment authors. The default is a "simple" affiliation which only sites the institution that the author(s) is associated with negating the address afterwards. All other affiliations will include each author's institution name and address.
 
-```
+```r
 author:
   - name: 'Ian G. Taylor'
     affiliations:
@@ -200,6 +204,31 @@ param_names = c("fleet1", "fleet2", )
 
 ### Section Customizations
 
+By default, the template from `asar` includes the recommended standard guidelines for a NOAA stock assessment as agreed upon by a Steering Committee of NOAA assessment scientists. Details about what to include within each section/subsection are located in the default templates using an HTML comment. This means that the text will not be rendered with the rest of the document. Users can remove this text when writing the document if they wish.
+
+`asar` offers a variety of customization features including the option to select a subset of sections using the argument `custom=TRUE` and `custom_sections` or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`. 
+
+For example, if the user only wants to write a stock assessment report update that contains new data and the results. Run the following code:
+
+```r
+asar::create_template(
+  format = "pdf",
+  office = "NWFSC",
+  region = "U.S. West Coast",
+  species = "Petrale sole",
+  spp_latin = "Eopsetta jordani",
+  year = 2023,
+  author = c("Ian G. Taylor", "Vladlena Gertseva", "Nick Tolimieri"),
+  include_affiliation = TRUE,
+  simple_affiliation = FALSE,
+  param_names = c("nf","sf"),
+  param_values = c("North fleet", "South fleet"),
+  resdir = here(),
+  model_results = "petrale_convert_output.csv",
+  add_section = "Harvest Control Rules",
+  section_location = "after-results"
+)
+```
 
 
 ## What to expect
@@ -225,7 +254,7 @@ The optional addition of new sections as indicated by the user in the `create_te
   - Indicate the new section name (more than one section can be added using `c()`)
   - Indicate the placement of the section relative to the base sections (cases with more than one new sections added relative to another section will be added in the order listed)
 
-```
+```r
 new_section = "Management"
 section_location = "after-modeling_approach"
 ```
@@ -234,7 +263,7 @@ section_location = "after-modeling_approach"
 
 After filling out all sections (and leaving ones that are not applicable with a blanket statement), it is time to produce the pdf report. User should click the 'render' button at the top of the script when using R studio or run the following code in their **terminal**:
 
-```
+```r
 quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 ```
 
@@ -246,7 +275,7 @@ In the `tables.qmd` and `figures.qmd` quarto files located in your folder, there
 
 Here is an example:
 
-```{r}
+```r
 #| label: 'recruitment'
 #| echo: false 
 #| warning: false 
@@ -257,7 +286,7 @@ satf::plot_recruitment(dat = 'C:/Users/samantha.schiano/Documents/asar_live_demo
 ```
 
 
-You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply madke changes to the sentence(s) between the quotation marks.
+You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply make changes to the sentence(s) between the quotation marks.
 
 ## Tips
 
