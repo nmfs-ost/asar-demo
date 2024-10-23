@@ -66,10 +66,6 @@ This script will be the way you execute the primary functions of this package an
 
 ![](images/new_script.png)
 
-```{r echo=FALSE}
-knitr::include_graphics("images/new_script.png")
-```
-
 ## Relative Paths
 
 It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here`after setting the working directory. 
