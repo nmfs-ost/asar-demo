@@ -1175,7 +1175,7 @@
         "Maintainer": "Yihui Xie <xie@yihui.name>",
         "Repository": "CRAN",
         "Date/Publication": "2024-09-15 18:00:02 UTC",
-        "Built": "R 4.4.1; ; 2024-10-14 01:15:47 UTC; windows"
+        "Built": "R 4.4.1; ; 2024-10-21 01:27:23 UTC; windows"
       }
     },
     "withr": {
@@ -1288,11 +1288,17 @@
     }
   },
   "files": {
+    "css/highlight.css": {
+      "checksum": "03e3b3b6b261d53c31dc92a9ff5dedcb"
+    },
+    "css/styles.css": {
+      "checksum": "03e3b3b6b261d53c31dc92a9ff5dedcb"
+    },
     "Demo.html": {
-      "checksum": "8b855dbf8ec1aee2c804f0a81efc076f"
+      "checksum": "25cdf5c5ac660f8d5686316c0af8701e"
     },
     "Demo.Rmd": {
-      "checksum": "f6a2954e225da44fd6f86c983845b87c"
+      "checksum": "63b4985f468f7d755c0aa0a6a76f6ac8"
     },
     "images/example-pop-up-highlight.PNG": {
       "checksum": "ce451babc7c00a50ae988f1f0f4313fd"

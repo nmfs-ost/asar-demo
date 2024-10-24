@@ -22,6 +22,21 @@ knitr::opts_chunk$set(
 )
 ```
 
+```{r, echo=FALSE, eval=TRUE}
+add_resource_path <- function(path) {
+  if (dir.exists(path))
+    shiny::addResourcePath(basename(path), path)
+  if (dir.exists(path)) {
+    prefix <- paste0("shiny_prerendered_", basename(path))
+    shiny::addResourcePath(prefix, path)
+  }
+}
+add_resource_path(getwd())
+output_dir <- getwd()
+add_resource_path(file.path(output_dir,"css"))
+add_resource_path(file.path(output_dir,"images"))
+```
+
 ## Welcome
 
 The `asar` R package is a tool intended to improve and streamline the workflows of stock assessment scientists focusing on reporting. The following instructions will guide the user on how to efficiently use the tool. The other articles available on this website will provide descriptions of other tools that will help a user implement this package into their workflow.
