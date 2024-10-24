@@ -1,5 +1,5 @@
 ---
-title: "asar Tutorial"
+title: "ASAR Tutorial"
 output: 
   learnr::tutorial:
     progressive: true
@@ -62,7 +62,7 @@ Petrale sole is a right-eyed flounder ranging from the western Gulf of Alaska to
 
 ### Package Download
 
-To begin please download the following packages
+To begin, please download the following packages
 
 ```r
 install.packages("remotes")
@@ -86,7 +86,7 @@ This script will be the way you execute the primary functions of this package an
 
 ## Relative Paths
 
-It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here`after setting the working directory. 
+It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here` **after** setting the working directory. 
 
 ```r
 install.packages("here")
@@ -95,35 +95,36 @@ here::here()
 
 The user can now designate paths within the folder containing the 'here' file. Note: the file will be hidden within the Rstudio interface, but can be seen in File explorer or an equal local file location. 
 
-Example:
-
-```r
-output <- load(here::here("data", "Report.sso))
-```
-
 ## Locate Model Ouptut File
 
-To help streamline the report writing process, an additional R package that compliments asar was developed called satf. This package contains pre-coded tables (flextable) and figure (ggplot2) using a standardized framework of data produced from the function `convert_output` in `asar`. 
+To help streamline the report writing process, an additional R package that compliments `asar` was developed called `satf`. This package contains pre-coded tables (flextable) and figure (ggplot2) using a standardized framework of data produced from the function `convert_output` in `asar`. 
 
 For this step we recommend either placing the model results file for either Stock Synthesis (SS3) or Beaufort Assessment Model (BAM) into your working directory. For SS3, this is the Report.sso file and for BAM this is the .rdat file produced after running the ADMB2R routines. 
 
 The petrale sole output file is located [here](https://github.com/nmfs-ost/asar/tree/main/data/Report.sso) for users to download and try themselves.
 
+**Example:** The following example will load the Report.sso file from your working directory using the `here` function.
+
+```r
+output_file <- load(here::here("Report.sso))
+```
+
 ## Getting Started
 
-We recommend converting your output file outside of the create_template function for large and/or complex data sets. There are two options for running this function.
+We recommend converting your output file outside of the `create_template` function for large and/or complex data sets. There are two options for running this function.
 
 1) (Recommended) Save the output as a .csv then reload into your R environment 
 
 ```r
 asar::convert_output(
-  output_file = "Report.sso",
+  output_file = output_file,
   outdir = getwd(), # or wherever you saved the example output file
   model = "SS3",
   file_save = TRUE,
   savedir = getwd(),
   save_name = "petrale_sole_std_output"
 )
+output <- read.csv(here::here("petrale_sole_std_output.csv"))
 ```
 
 2) Save as an object in your environment
@@ -149,6 +150,7 @@ Recommended minimum arguments:
   - species
   - spp_latin
   - year (if different than the current year)
+  - author(s)
   
 ```r
 asar::create_template(
@@ -192,9 +194,11 @@ The option to remove affiliation altogether is present by setting
 
 Note: While we have made efforts to create an extensive list of assessment authors across NOAA, there may be instances where you or a colleague does not have their associated affiliation since they are not in our database. In this case, you can submit an [issue here](https://github.com/nmfs-ost/asar/issues/19) and you will be added as soon as possible.
 
+*In the meantime, another author can be added using the argument `add_author`. Their affiliation can be manually added after creating the template following the same formatting in the YAML as the other authors.*
+
 ### Parameterization
 
-The skeleton is by default parameterized to allow the user to reference commonly used terms or quantities. The default parameters are species, office, and region (is applicable).
+The skeleton is by default parameterized to allow the user to reference commonly used terms or quantities. The default parameters are species, office, and region (if applicable).
 
 Two arguments in the function allow the user to add more parameters:
   - `param_names`
@@ -204,16 +208,16 @@ To use these parameters, use the following notation while writing text:
 ```
 'r params$species`
 ```
-Additional parameters can be added using the argument:
+Additional parameters can be added using the arguments:
 
   - `param_names`
   - `param_values`
 
-For including more than one new parameter please list them using `c()`.
-For example:
+For including more than one new parameter please list them using `c()`. For example:
 
 ```r
 param_names = c("fleet1", "fleet2", )
+param_values = c("recreational", "commercial")
 ```
 
 ### Section Customizations
@@ -254,7 +258,7 @@ asar::create_template(
 
 During processing, you will see progress for the template being built in the R console. A message is displayed that let's you know where the template was saved and to fill out the template.
 
-`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future release will allow the user to call on old assessments that were made using `asar::create_template`, so only minor adjustments will be made as needed by the current assessment.
+`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future release will allow the user to call on old assessments that were made using `asar::create_template(new_template=FALSE)`, so only minor adjustments will be made as needed to the current assessment.
 
 ### Sections
 
@@ -276,19 +280,9 @@ new_section = "Management"
 section_location = "after-modeling_approach"
 ```
 
-## Rendering
-
-After filling out all sections (and leaving ones that are not applicable with a blanket statement), it is time to produce the pdf report. User should click the 'render' button at the top of the script when using R studio or run the following code in their **terminal**:
-
-```r
-quarto render SAR_USWC_Petrale_sole_skeleton.qmd
-```
-
-![](images/example-pop-up-highlight.png)
-
 ## Figure and Table Chunks
 
-In the `tables.qmd` and `figures.qmd` quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend not to, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
+In the `tables.qmd` and `figures.qmd` quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend to include all default objects, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
 
 Here is an example:
 
@@ -299,11 +293,37 @@ Here is an example:
 #| eval: false 
 #| fig-cap: "Recruitment over time of this species in the region."
 #| fig-alt: "Graph of recruitment over time. Data can be found at the species folder at the Pacific Fisheries Management Council."
-satf::plot_recruitment(dat = 'C:/Users/samantha.schiano/Documents/asar_live_demo/Report.sso', model = 'SS3')
+satf::plot_recruitment(dat = output)
 ```
 
-You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply make changes to the sentence(s) between the quotation marks.
+You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply make changes to the sentence(s) between the quotation marks. More guidance on writing alternative text is available on [`asar` GitHub Pages](https://nmfs-ost.github.io/asar/articles/index.html)
+
+## Rendering
+
+After filling out all sections (and leaving ones that are not applicable with a blanket statement), it is time to produce the pdf report. User should click the 'render' button at the top of the script when using R studio or run the following code in the **terminal**:
+
+```r
+quarto render SAR_USWC_Petrale_sole_skeleton.qmd
+```
+
+![](images/example-pop-up-highlight.png)
 
 ## Tips
 
+- DO NOT make changes to the area between the three dashes in the quarto skeleton file (`---`) unless you are very familiar with quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering. 
 
+- In the future, additional tables and figures will be available from the [satf]() R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
+
+```{r, eval=FALSE}
+# ```{r}
+# #| label: ''
+# #| echo: false
+# #| warning: false
+# #| eval: true 
+# #| fig-cap: "Insert figure/table caption"
+# #| fig-alt: "Insert alternative text for figure/table"
+# satf::plot_recruitment(dat = output)
+# ```
+```
+
+- `asar` is a continual work in progress. Version 1.0 is planned for release at the end of December of 2024 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
