@@ -3,7 +3,7 @@
   "locale": "en_US",
   "platform": "4.3.3",
   "metadata": {
-    "appmode": "rmd-shiny",
+    "appmode": "static",
     "primary_rmd": null,
     "primary_html": "tutorials/Demo.html",
     "content_category": null,
