@@ -1299,15 +1299,15 @@
       "checksum": "4201493be65eb2c6e04ef9d4fdadb59f"
     },
     "Demo.Rmd": {
-      "checksum": "c225c31dd58ce55d48ff60a89a596555"
+      "checksum": "799dbb76a88342de598ccb7327ef9152"
     },
-    "example-pop-up-highlight.PNG": {
+    "example-pop-up-highlight.jpg": {
       "checksum": "ce451babc7c00a50ae988f1f0f4313fd"
     },
-    "example-pop-up.PNG": {
+    "example-pop-up.jpg": {
       "checksum": "301461bf1dad994fa73fdbceb7c21402"
     },
-    "example-section.PNG": {
+    "example-section.jpg": {
       "checksum": "e9133070dc8ccddec4a0c8f871957f3f"
     },
     "images/example-pop-up-highlight.PNG": {
@@ -1325,10 +1325,10 @@
     "images/rda_folder.PNG": {
       "checksum": "a374bd875d8c30c6a53e40c2d1c447c7"
     },
-    "new_script.PNG": {
+    "new_script.jpg": {
       "checksum": "71f2b4525c8d36369baebd95b9441011"
     },
-    "rda_folder.PNG": {
+    "rda_folder.jpg": {
       "checksum": "a374bd875d8c30c6a53e40c2d1c447c7"
     }
   },
