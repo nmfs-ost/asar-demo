@@ -70,9 +70,11 @@ remotes::install_github("nmfs-ost/asar")
 remotes::install_github("nmfs-ost/satf")
 ```
 
+Please reference the [README](https://github.com/nmfs-ost/asar) if you are having issues downloading the package.
+
 ## Set Working Directory
 
-Additionally, please set your working directory to the folder you want the files created from this package to remain. The `create_template` function in asar will create a standardized folder structure to store all of the files, but you as the user need to identify where they should be placed.
+Additionally, please set your working directory to the folder you want the files created from this package to remain. The `create_template` function in asar will create a standard folder named "report" to store all of the files, but you as the user need to identify where they should be placed.
 
 Tip: if a working directory is not set manually, the function will default to the default working directory in R found in Tools > Global Options > General.
 
@@ -84,7 +86,7 @@ This script will be the way you execute the primary functions of this package an
 
 ## Relative Paths
 
-It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the packages, run the function `here` **after** setting the working directory. 
+It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the package, then run the function `here` **after** setting the working directory. 
 
 ```r
 install.packages("here")
@@ -107,7 +109,9 @@ The petrale sole output file is located [here](https://github.com/nmfs-ost/asar/
 output_file <- load(here::here("Report.sso))
 ```
 
-## Getting Started
+## Getting Started  {.tabset}
+
+### Convert to Standard Ouptput
 
 We recommend converting your output file outside of the `create_template` function for large and/or complex data sets. There are two options for running this function.
 
@@ -135,11 +139,50 @@ output <- asar::convert_output(
 )
 ```
 
-**Note:** for users converting results from BAM, you will need to define an additional argument of fleet names in the form of the acronyms used in the file. This will hopefully be deprecated in the future. 
+### Prepare tables and figures
+
+To create prepared figures and tables, you will need to use the `satf` package. This package was designed to work in conjunction with `asar` to increase automation of stock assessment reports. (Note: they still can operate independently as desired).
+
+The user has two options to create their tables and figures from `satf`: 
+
+(1) Run the following code BEFORE running `asar::create_template`:
+
+```
+satf::exp_all_figs_tables(
+  dat,
+  make_rda = TRUE,
+  rda_dir = here(),
+  ref_line = "unfished",
+  ref_line_sb = "target")
+```
+
+*Note:* if you want increased customization for these tables/figures, we encourage you to run various functions in `satf` indidually.
+
+(2) Set specific arguments in create_template to run everything together. The arguments are as follows:
+
+* make_rda (required)
+
+* rda_dir (required)
+
+Optional: 
+
+* end_year 
+
+* ref_line
+
+* ref_line_sb
+
+* spawning_biomass_label
+
+* recruitment_label
+
+After selecting one of the two above options, you should have created a folder that contains .rda files containing tables and figures with their associated caption and alternative text (all pre-built for you).
+
+![](images/rda_folder.png)
 
 ## Run create_template
 
-Define your arguments for creating a stock assessment report template. Running the function without any arguments will produce a blank report, but will not be organized in the standard file framework. 
+Define your arguments for creating a stock assessment report template. Running the function without any arguments will produce a blank report; however, you will need to be familiar enough with quarto to make edits for a completed report. Running a blank template will also not include any pre-coded tables or figures in the folder. You can find more information on these objects in the [`satf` package](https://github.com/nmfs-ost/satf).
 
 Recommended minimum arguments:
 

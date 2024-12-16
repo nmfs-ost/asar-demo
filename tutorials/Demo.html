@@ -163,15 +163,18 @@ href="https://www.pcouncil.org/stock-assessments-star-reports-stat-reports-rebui
 <pre class="r"><code>install.packages(&quot;remotes&quot;)
 remotes::install_github(&quot;nmfs-ost/asar&quot;)
 remotes::install_github(&quot;nmfs-ost/satf&quot;)</code></pre>
+<p>Please reference the <a
+href="https://github.com/nmfs-ost/asar">README</a> if you are having
+issues downloading the package.</p>
 </div>
 </div>
 <div id="section-set-working-directory" class="section level2">
 <h2>Set Working Directory</h2>
 <p>Additionally, please set your working directory to the folder you
 want the files created from this package to remain. The
-<code>create_template</code> function in asar will create a standardized
-folder structure to store all of the files, but you as the user need to
-identify where they should be placed.</p>
+<code>create_template</code> function in asar will create a standard
+folder named “report” to store all of the files, but you as the user
+need to identify where they should be placed.</p>
 <p>Tip: if a working directory is not set manually, the function will
 default to the default working directory in R found in Tools &gt; Global
 Options &gt; General.</p>
@@ -189,7 +192,7 @@ helpful to save this script for later use or future assessments.</p>
 such as the <code>here</code> package. The here function creates a file
 that allows R to create a path to a folder without having the user
 manually write out the path. The way to use this is to download the
-packages, run the function <code>here</code> <strong>after</strong>
+package, then run the function <code>here</code> <strong>after</strong>
 setting the working directory.</p>
 <pre class="r"><code>install.packages(&quot;here&quot;)
 here::here()</code></pre>
@@ -216,8 +219,10 @@ Report.sso file from your working directory using the <code>here</code>
 function.</p>
 <pre class="r"><code>output_file &lt;- load(here::here(&quot;Report.sso))</code></pre>
 </div>
-<div id="section-getting-started" class="section level2">
-<h2>Getting Started</h2>
+<div id="section-getting-started" class="section level2 tabset">
+<h2 class="tabset">Getting Started</h2>
+<div id="section-convert-to-standard-ouptput" class="section level3">
+<h3>Convert to Standard Ouptput</h3>
 <p>We recommend converting your output file outside of the
 <code>create_template</code> function for large and/or complex data
 sets. There are two options for running this function.</p>
@@ -242,17 +247,62 @@ output &lt;- read.csv(here::here(&quot;petrale_sole_std_output.csv&quot;))</code
   outdir = getwd(),
   model = &quot;SS3&quot;
 )</code></pre>
-<p><strong>Note:</strong> for users converting results from BAM, you
-will need to define an additional argument of fleet names in the form of
-the acronyms used in the file. This will hopefully be deprecated in the
-future.</p>
+</div>
+<div id="section-prepare-tables-and-figures" class="section level3">
+<h3>Prepare tables and figures</h3>
+<p>To create prepared figures and tables, you will need to use the
+<code>satf</code> package. This package was designed to work in
+conjunction with <code>asar</code> to increase automation of stock
+assessment reports. (Note: they still can operate independently as
+desired).</p>
+<p>The user has two options to create their tables and figures from
+<code>satf</code>:</p>
+<ol style="list-style-type: decimal">
+<li>Run the following code BEFORE running
+<code>asar::create_template</code>:</li>
+</ol>
+<pre><code>satf::exp_all_figs_tables(
+  dat,
+  make_rda = TRUE,
+  rda_dir = here(),
+  ref_line = &quot;unfished&quot;,
+  ref_line_sb = &quot;target&quot;)</code></pre>
+<p><em>Note:</em> if you want increased customization for these
+tables/figures, we encourage you to run various functions in
+<code>satf</code> indidually.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Set specific arguments in create_template to run everything
+together. The arguments are as follows:</li>
+</ol>
+<ul>
+<li><p>make_rda (required)</p></li>
+<li><p>rda_dir (required)</p></li>
+</ul>
+<p>Optional:</p>
+<ul>
+<li><p>end_year</p></li>
+<li><p>ref_line</p></li>
+<li><p>ref_line_sb</p></li>
+<li><p>spawning_biomass_label</p></li>
+<li><p>recruitment_label</p></li>
+</ul>
+<p>After selecting one of the two above options, you should have created
+a folder that contains .rda files containing tables and figures with
+their associated caption and alternative text (all pre-built for
+you).</p>
+<p><img src="images/rda_folder.png" /></p>
+</div>
 </div>
 <div id="section-run-create_template" class="section level2">
 <h2>Run create_template</h2>
 <p>Define your arguments for creating a stock assessment report
 template. Running the function without any arguments will produce a
-blank report, but will not be organized in the standard file
-framework.</p>
+blank report; however, you will need to be familiar enough with quarto
+to make edits for a completed report. Running a blank template will also
+not include any pre-coded tables or figures in the folder. You can find
+more information on these objects in the <a
+href="https://github.com/nmfs-ost/satf"><code>satf</code>
+package</a>.</p>
 <p>Recommended minimum arguments:</p>
 <ul>
 <li>office</li>
