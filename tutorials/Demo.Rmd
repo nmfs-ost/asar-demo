@@ -1,5 +1,5 @@
 ---
-title: "ASAR Tutorial"
+title: "asar Tutorial"
 output: 
   learnr::tutorial:
     progressive: true
@@ -43,81 +43,85 @@ The `asar` R package is a tool intended to improve and streamline the workflows 
 
 This tutorial is an extension of the example presented on the [home page](https://nmfs-ost.github.io/asar/).
 
-## TLDR
+## Recorded Demo
 
-Below is a shortened demonstration of some of the content in this tutorial:
+Below is a shortened demonstration of some of the content in this tutorial. Please note that this demo was recorded in December 2024, right before the tool's first release in January 2025. If you encounter issues with your code, double-check with the package's documentation, which will be up-to-date.
 
-<iframe width="640" height="360" src="https://youtube.com/embed/Q8XJTTkjcts?autoplay&end=1577&start=1200 " frameborder="0" allowfullscreen></iframe>
+<iframe width="640" height="360" src="https://youtube.com/embed/Q8XJTTkjcts?autoplay&amp;end=1577&amp;start=1200 " frameborder="0" allowfullscreen>
 
+</iframe>
 
 ## Background
 
-In this tutorial, you will be working to recreate the 2023 Petral sole stock assessment report. The materials you might need such as example data can be found [here](https://github.com/nmfs-ost/asar-demo/tree/main/data). Additionally, to check your work, there is an [additional folder](https://github.com/nmfs-ost/asar-demo/tree/main/stock_assessment_reports) containing the files that should be produced if you want to recreate this example.
+In this tutorial, you will be working to recreate the 2023 Petrale sole stock assessment report. Below are links to two useful folders:
+
+1.  A folder containing [materials you might need, such as example data](https://github.com/nmfs-ost/asar-demo/tree/main/data).
+2.  A folder containing [the files that should be produced if you recreate this example](https://github.com/nmfs-ost/asar-demo/tree/main/stock_assessment_reports).
 
 ### Species Background
 
-Petrale sole is a right-eyed flounder ranging from the western Gulf of Alaska to the Coronado Islands in northern Baja California. It is often referred to as brill, California sole, Jordan's flounder, cape sole, and other additional common names. The stock has consistently been the most commercially valuable flatfish in the California Current Ecosystem and has been sought after since the late 19th century. This stock was last assessed in 2023 by NOAA Fisheries Northwest Fisheries Science Center. The following example will recreate the [stock assessment report](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) published by the Pacific Fisheries Management Council (PFMC). Additional assessments from the PFMC can be found online [here](https://www.pcouncil.org/stock-assessments-star-reports-stat-reports-rebuilding-analyses-terms-of-reference/groundfish-stock-assessment-documents/).
+Petrale sole is a right-eyed flounder ranging from the western Gulf of Alaska to the Coronado Islands in northern Baja California. It is often referred to as brill, California sole, Jordan's flounder, cape sole, and other additional common names. The stock has consistently been the most commercially valuable flatfish in the California Current Ecosystem and has been sought after since the late 19th century. This stock was last assessed in 2023 by NOAA Fisheries Northwest Fisheries Science Center. The following example will recreate the [stock assessment report](https://www.pcouncil.org/documents/2024/02/status-of-petrale-sole-eopsetta-jordanialong-the-u-s-west-coast-in-2023.pdf/) published by the Pacific Fisheries Management Council (PFMC). [Additional assessments from the PFMC can be found here](https://www.pcouncil.org/stock-assessments-star-reports-stat-reports-rebuilding-analyses-terms-of-reference/groundfish-stock-assessment-documents/).
 
 ## Prerequisites
 
-### Package Download
+To begin, please download the following packages:
 
-To begin, please download the following packages
-
-```r
+``` r
 install.packages("remotes")
 remotes::install_github("nmfs-ost/asar")
 remotes::install_github("nmfs-ost/satf")
 ```
 
+Also ensure that [Quarto](https://quarto.org/docs/download/index.html) is installed.
+
 Please reference the [README](https://github.com/nmfs-ost/asar) if you are having issues downloading the package.
 
 ## Set Working Directory
 
-Additionally, please set your working directory to the folder you want the files created from this package to remain. The `create_template` function in asar will create a standard folder named "report" to store all of the files, but you as the user need to identify where they should be placed.
+Please set your working directory to the folder that should contain the files created from this package. The `create_template` function in `asar` will create a standard folder named "report" to store all of the files, but you as the user need to identify where they should be placed.
 
-Tip: if a working directory is not set manually, the function will default to the default working directory in R found in Tools > Global Options > General.
+Three ways to set the working directory are to [make an R project](https://r4ds.hadley.nz/workflow-scripts.html#rstudio-projects), use the [`here` package](https://here.r-lib.org/) (see the [Relative Paths](#relative-paths) section, below), and/or use [`setwd()`](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/getwd).
 
-## Create blank R script
+Tip: If a working directory is not set manually, the function will default to the default working directory in R found in Tools \> Global Options \> General.
 
-This script will be the way you execute the primary functions of this package and create a template for a stock assessment report. It can be helpful to save this script for later use or future assessments.
+## Create Blank R script
+
+In this script, you will execute the primary functions of this package and create a template for a stock assessment report. It can be helpful to save this script for later use or future assessments.
 
 ![](images/new_script.PNG)
 
 ## Relative Paths
 
-It is recommended to use a method to create relative paths to files such as the `here` package. The here function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the package, then run the function `here` **after** setting the working directory. 
+It is recommended to use a method to create relative paths to files such as the [`here` package](https://here.r-lib.org/). The `here` function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the package, then run the function `here` **after** setting the working directory.
 
-```r
+``` r
 install.packages("here")
 here::here()
 ```
 
-The user can now designate paths within the folder containing the 'here' file. Note: the file will be hidden within the Rstudio interface, but can be seen in File explorer or an equal local file location. 
+The user can now designate paths within the folder containing the 'here' file. Note: the file will be hidden within the Rstudio interface, but can be seen in File explorer or an equivalent local file location.
 
-## Locate Model Ouptut File
+## Locate Model Output File
 
-To help streamline the report writing process, an additional R package that compliments `asar` was developed called `satf`. This package contains pre-coded tables (flextable) and figure (ggplot2) using a standardized framework of data produced from the function `convert_output` in `asar`. 
+For this step, we recommend either placing the model results file for either Stock Synthesis (SS3) or Beaufort Assessment Model (BAM) into your working directory. The model results files are the Report.sso file (SS3) and the .rdat file produced after running the ADMB2R routines (BAM).
 
-For this step we recommend either placing the model results file for either Stock Synthesis (SS3) or Beaufort Assessment Model (BAM) into your working directory. For SS3, this is the Report.sso file and for BAM this is the .rdat file produced after running the ADMB2R routines. 
-
-The petrale sole output file is located [here](https://github.com/nmfs-ost/asar/tree/main/data/Report.sso) for users to download and try themselves.
+You can download the petrale sole output file [here](https://github.com/nmfs-ost/asar/tree/main/data/Report.sso).
 
 **Example:** The following example will load the Report.sso file from your working directory using the `here` function.
 
-```r
+``` r
 output_file <- load(here::here("Report.sso))
 ```
 
-## Getting Started  {.tabset}
+## Preparing to Run `create_template` {.tabset}
 
-### Convert to Standard Ouptput
+### Convert to Standard Output
 
 We recommend converting your output file outside of the `create_template` function for large and/or complex data sets. There are two options for running this function.
 
-1) (Recommended) Save the output as a .csv then reload into your R environment 
+1)  (Recommended) Save the converted model results as a .csv, then load into your R environment
 
-```r
+``` r
 asar::convert_output(
   output_file = output_file,
   outdir = getwd(), # or wherever you saved the example output file
@@ -126,12 +130,13 @@ asar::convert_output(
   savedir = getwd(),
   save_name = "petrale_sole_std_output"
 )
+
 output <- read.csv(here::here("petrale_sole_std_output.csv"))
 ```
 
-2) Save as an object in your environment
+2)  Convert model results and save as an object in your R environment
 
-```r
+``` r
 output <- asar::convert_output(
   output_file = "Report.sso",
   outdir = getwd(),
@@ -139,15 +144,15 @@ output <- asar::convert_output(
 )
 ```
 
-### Prepare tables and figures
+### Prepare Tables and Figures
 
-To create prepared figures and tables, you will need to use the `satf` package. This package was designed to work in conjunction with `asar` to increase automation of stock assessment reports. (Note: they still can operate independently as desired).
+Figures and tables are created with the [`satf`](https://github.com/nmfs-ost/satf) package, which was designed to work in conjunction with `asar` to increase the automation of stock assessment reports. The input for `satf` is a standardized framework of data produced from the `asar` function `convert_output` (i.e., a "converted" model results file). The output is a collection of pre-coded tables (made with `flextable`) and figures (made with `ggplot2`). Both of these packages can operate independently as desired.
 
-The user has two options to create their tables and figures from `satf`: 
+The user has two options to create tables and figures with `satf`:
 
-(1) Run the following code BEFORE running `asar::create_template`:
+(1) Create all figures and tables with `satf`, then run `asar`. To do this, run the following code BEFORE running `asar::create_template`:
 
-```
+```         
 satf::exp_all_figs_tables(
   dat,
   make_rda = TRUE,
@@ -156,44 +161,44 @@ satf::exp_all_figs_tables(
   ref_line_sb = "target")
 ```
 
-*Note:* if you want increased customization for these tables/figures, we encourage you to run various functions in `satf` indidually.
+*Note:* if you want increased customization for these tables/figures, we encourage you to run various functions in `satf` individually.
 
-(2) Set specific arguments in create_template to run everything together. The arguments are as follows:
+(2) To create figures and tables _and_ the report template in the same step, set specific arguments in `asar::create_template` to run everything together. The arguments are as follows:
 
-* make_rda (required)
+-   make_rda (required)
 
-* rda_dir (required)
+-   rda_dir (required)
 
-Optional: 
+Optional:
 
-* end_year 
+-   end_year
 
-* ref_line
+-   ref_line
 
-* ref_line_sb
+-   ref_line_sb
 
-* spawning_biomass_label
+-   spawning_biomass_label
 
-* recruitment_label
+-   recruitment_label
 
-After selecting one of the two above options, you should have created a folder that contains .rda files containing tables and figures with their associated caption and alternative text (all pre-built for you).
+After selecting one of the two above options, you should have created a folder that contains .rda files containing tables and figures with their associated caption and alternative text (all pre-built for you). You must check that the captions and alternative text are complete and accurate, then update them yourself if needed. See the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for guidance.
 
 ![](images/rda_folder.PNG)
 
-## Run create_template
+## Run `create_template`
 
-Define your arguments for creating a stock assessment report template. Running the function without any arguments will produce a blank report; however, you will need to be familiar enough with quarto to make edits for a completed report. Running a blank template will also not include any pre-coded tables or figures in the folder. You can find more information on these objects in the [`satf` package](https://github.com/nmfs-ost/satf).
+Define your arguments for creating a stock assessment report template. Running the function without any arguments (e.g., `asar::create_template()`) will produce a blank report; however, you will need to be familiar enough with Quarto to make edits for a completed report. Running a blank template will also not include any pre-coded tables or figures in the folder. You can find more information on these objects in the [`satf` package](https://github.com/nmfs-ost/satf).
 
 Recommended minimum arguments:
 
-  - office
-  - region (if applicable)
-  - species
-  - spp_latin
-  - year (if different than the current year)
-  - author(s)
-  
-```r
+-   office
+-   region (if applicable)
+-   species
+-   spp_latin
+-   year (if different than the current year)
+-   author(s)
+
+``` r
 asar::create_template(
   format = "pdf",
   office = "NWFSC",
@@ -211,15 +216,15 @@ asar::create_template(
 )
 ```
 
-## Create_template Customizations {.tabset}
+## `Create_template` Customizations {.tabset}
 
-There are a variety of ways to customize the default template that allows the analyst to expand or change their report as needed. 
+There are a variety of ways to customize the default template that allows the analyst to expand or change their report as needed.
 
 ### Affiliation Formatting
 
-The user has the option to select multiple ways to report affiliations of assessment authors. The default is a "simple" affiliation which only sites the institution that the author(s) is associated with negating the address afterwards. All other affiliations will include each author's institution name and address.
+The user has the option to select multiple ways to report affiliations of assessment authors. The default is a "simple" affiliation which only cites the institution that the author(s) is associated with negating the address afterwards. All other affiliations will include each author's institution name and address.
 
-```r
+``` r
 author:
   - name: 'Ian G. Taylor'
     affiliations:
@@ -230,8 +235,7 @@ author:
         postal-code: '98112-2097'
 ```
 
-The option to remove affiliation altogether is present by setting
-`include_affiliation = FALSE`.
+The option to remove affiliation altogether is present by setting `include_affiliation = FALSE`.
 
 Note: While we have made efforts to create an extensive list of assessment authors across NOAA, there may be instances where you or a colleague does not have their associated affiliation since they are not in our database. In this case, you can submit an [issue here](https://github.com/nmfs-ost/asar/issues/19) and you will be added as soon as possible.
 
@@ -241,22 +245,22 @@ Note: While we have made efforts to create an extensive list of assessment autho
 
 The skeleton is by default parameterized to allow the user to reference commonly used terms or quantities. The default parameters are species, office, and region (if applicable).
 
-Two arguments in the function allow the user to add more parameters:
-  - `param_names`
-  - `param_values`
-  
+Two arguments in the function allow the user to add more parameters: - `param_names` - `param_values`
+
 To use these parameters, use the following notation while writing text:
-```
+
+```         
 'r params$species`
 ```
+
 Additional parameters can be added using the arguments:
 
-  - `param_names`
-  - `param_values`
+-   `param_names`
+-   `param_values`
 
 For including more than one new parameter please list them using `c()`. For example:
 
-```r
+``` r
 param_names = c("fleet1", "fleet2", )
 param_values = c("recreational", "commercial")
 ```
@@ -265,9 +269,9 @@ param_values = c("recreational", "commercial")
 
 By default, the template from `asar` includes the recommended standard guidelines for a NOAA stock assessment as agreed upon by a Steering Committee of NOAA assessment scientists. Details about what to include within each section/subsection are located in the default templates using an HTML comment. This means that the text will not be rendered with the rest of the document. Users can remove this text when writing the document if they wish.
 
-`asar` offers a variety of customization features by using the argument `custom=TRUE`. These customizations can include the option to select a subset of sections using the argument `custom_sections` or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`. 
+`asar` offers a variety of customization features by using the argument `custom=TRUE`. These customizations can include the option to select a subset of sections using the argument `custom_sections` or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`.
 
-For example, if the user only wants to write a stock assessment report update that contains new data and the results. 
+For example, if the user only wants to write a stock assessment report update that contains new data and the results.
 
 Here is an application for customizing a template:
 
@@ -293,7 +297,7 @@ asar::create_template(
 )
 ```
 
-## What to expect {.tabset}
+## What to Expect {.tabset}
 
 ### Skeleton Pop-up
 
@@ -303,20 +307,20 @@ During processing, you will see progress for the template being built in the R c
 
 ### Sections
 
-There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in. 
+There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in.
 
 ![](images/example-pop-up.PNG)
 
-Each section quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section. 
+Each section quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section.
 
 ![](images/example-section.PNG)
 
-The optional addition of new sections as indicated by the user in the `create_template` function will be blank with the exception of a pre-built header with the new section name. 
+The optional addition of new sections as indicated by the user in the `create_template` function will be blank with the exception of a pre-built header with the new section name.
 
-  - Indicate the new section name (more than one section can be added using `c()`)
-  - Indicate the placement of the section relative to the base sections (cases with more than one new sections added relative to another section will be added in the order listed)
+-   Indicate the new section name (more than one section can be added using `c()`)
+-   Indicate the placement of the section relative to the base sections (cases with more than one new sections added relative to another section will be added in the order listed)
 
-```r
+``` r
 new_section = "Management"
 section_location = "after-modeling_approach"
 ```
@@ -327,7 +331,7 @@ In the `tables.qmd` and `figures.qmd` quarto files located in your folder, there
 
 Here is an example:
 
-```r
+``` r
 #| label: 'recruitment'
 #| echo: false 
 #| warning: false 
@@ -343,7 +347,7 @@ You can also adjust figure captions and alternative text from the arguments `fig
 
 After filling out all sections (and leaving ones that are not applicable with a blanket statement), it is time to produce the pdf report. User should click the 'render' button at the top of the script when using R studio or run the following code in the **terminal**:
 
-```r
+``` r
 quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 ```
 
@@ -351,9 +355,9 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 
 ## Tips
 
-- DO NOT make changes to the area between the three dashes in the quarto skeleton file (`---`) unless you are very familiar with quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering. 
+-   DO NOT make changes to the area between the three dashes in the quarto skeleton file (`---`) unless you are very familiar with quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering.
 
-- In the future, additional tables and figures will be available from the [satf]() R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
+-   In the future, additional tables and figures will be available from the [satf]() R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
 
 ```{r, eval=FALSE}
 # ```{r}
@@ -367,4 +371,4 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 # ```
 ```
 
-- `asar` is a continual work in progress. Version 1.0 is planned for release at the end of December of 2024 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
+-   `asar` is a continual work in progress. Version 1.0 is planned for release at the end of December of 2024 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
