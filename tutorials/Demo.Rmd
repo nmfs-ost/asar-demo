@@ -358,7 +358,7 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){
 } else {eval_recruitment <- FALSE}
 ``` 
 
-```r 
+```r
 #| label: 'fig-recruitment-plot'
 #| echo: false 
 #| warning: false 
@@ -367,6 +367,7 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){
 #| fig-alt: !expr if(eval_recruitment) recruitment_alt_text
 recruitment_plot
 ``` 
+
 
 You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply make changes to the sentence(s) between the quotation marks. More guidance on writing alternative text is available on [`asar` GitHub Pages](https://nmfs-ost.github.io/asar/articles/index.html).
 
@@ -388,8 +389,8 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 
 -   In the future, additional tables and figures will be available from the [satf](https://github.com/nmfs-ost/satf) R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
 
-````{verbatim}
-```{r}
+
+```r
 #| label: ''
 #| echo: false
 #| warning: false
@@ -398,7 +399,6 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 #| fig-alt: "Insert alternative text for figure/table"
 satf::plot_recruitment(dat = output)
 ```
-````
 
 
 -   `asar` is a continual work in progress. Version 1.0 is planned for release at the end of December of 2024 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
