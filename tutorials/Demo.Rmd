@@ -56,7 +56,7 @@ Below is a shortened demonstration of some of the content in this tutorial. Plea
 In this tutorial, you will be working to recreate the 2023 Petrale sole stock assessment report. Below are links to two useful folders:
 
 1.  A folder containing [materials you might need, such as example data](https://github.com/nmfs-ost/asar-demo/tree/main/data).
-2.  A folder containing [the files that should be produced if you recreate this example](https://github.com/nmfs-ost/asar-demo/tree/main/stock_assessment_reports).
+2.  A folder containing [the files that should be produced if you recreate this example](https://github.com/nmfs-ost/asar-demo/tree/main/report).
 
 ### Species Background
 
