@@ -90,7 +90,7 @@ In this script, you will execute the primary functions of this package and creat
 
 ![](images/new_script.PNG)
 
-## Relative Paths
+## Relative Paths {#relative-paths}
 
 It is recommended to use a method to create relative paths to files such as the [`here` package](https://here.r-lib.org/). The `here` function creates a file that allows R to create a path to a folder without having the user manually write out the path. The way to use this is to download the package, then run the function `here` **after** setting the working directory.
 
@@ -153,19 +153,22 @@ The user has two options to create tables and figures with `satf`:
 ```         
 satf::exp_all_figs_tables(
   dat,
-  make_rda = TRUE,
-  rda_dir = here(),
+  end_year = 2022,
+  rda_dir = here::here(),
   ref_line = "unfished",
-  ref_line_sb = "target")
+  ref_line_sb = "target",
+  indices_unit_label = "CPUE")
 ```
 
-*Note:* The dat file in the above function should be the converted dataframe from the `convert_outpout` function ran earlier in this tutorial. If you want increased customization for these tables/figures, we encourage you to run various functions in `satf` individually.
+*Note:* The dat file in the above function should be the converted dataframe from the `convert_output` function ran earlier in this tutorial. If you want increased customization for these tables/figures, we encourage you to run various functions in `satf` individually.
 
-(2) To create figures and tables _and_ the report template in the same step, set specific arguments in `asar::create_template` to run everything together. The arguments are as follows:
+(2) To create figures and tables *and* the report template in the same step, set specific arguments in `asar::create_template` to run everything together. The arguments are as follows:
 
 -   rda_dir (required)
 
 Optional:
+
+-   recruitment_unit_label
 
 -   end_year
 
@@ -173,11 +176,21 @@ Optional:
 
 -   ref_line_sb
 
+-   landings_unit_label
+
 -   spawning_biomass_label
 
--   recruitment_label
+-   ref_point
 
-After selecting one of the two above options, you should have created a folder that contains .rda files of tables and figures with their associated caption and alternative text (all pre-built for you!). You must check that the captions and alternative text are complete and accurate, then update them yourself if needed. See the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for guidance.
+-   ref_point_sb
+
+-   indices_unit_label
+
+-   biomass_unit_label
+
+-   catch_unit_label
+
+After selecting one of the two above options, you should have created a folder that contains rda files of tables and figures with their associated caption and alternative text (all pre-built for you!). You must check that the captions and alternative text are complete and accurate, then update them yourself if needed. See the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for guidance.
 
 ![](images/rda_folder.PNG)
 
@@ -207,8 +220,8 @@ asar::create_template(
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  resdir = here(), # indicate where the model output is located
-  model_results = "petrale_convert_output.csv" # converted model output
+  resdir = here::here(), # indicate where the model output is located
+  model_results = "petrale_sole_std_output.csv" # converted model output
 )
 ```
 
@@ -284,11 +297,11 @@ asar::create_template(
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  resdir = here(),
-  model_results = "petrale_convert_output.csv",
+  resdir = here::here(),
+  model_results = "petrale_sole_std_output.csv",
   custom = TRUE,
   custom_sections = c("data", "assessment", "discussion"),
-  add_section = "Harvest Control Rules",
+  new_section = "Harvest Control Rules",
   section_location = "after-assessment"
 )
 ```
@@ -303,11 +316,11 @@ During processing, you will see progress for the template being built in the R c
 
 ### Sections
 
-There will be a series of quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other quarto files will need to be filled in.
+There will be a series of Quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other Quarto files will need to be filled in.
 
 ![](images/example-pop-up.PNG)
 
-Each section quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section.
+Each section Quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section.
 
 ![](images/example-section.PNG)
 
@@ -318,20 +331,20 @@ The optional addition of new sections as indicated by the user in the `create_te
 
 ``` r
 new_section = "Management"
-section_location = "after-modeling_approach"
+section_location = "before-discussion"
 ```
 
 ## Figure and Table Chunks
 
 The pre-made tables and figures are generated through the use of a separate package called `satf`. By separating these two functions, it allows you to evaluate results files quickly without also generating the report. However, these two packages were co-developed to seamlessly integrate with one another and streamline the stock assessment workflow.
 
-In the `tables.qmd` and `figures.qmd` quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend to include all default objects, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
+In the `tables.qmd` and `figures.qmd` Quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend to include all default objects, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
 
 Here is an example:
 
 For each object (table or figure), there will be two chunks to properly call and create the object. The first loads in the rda object for the table or figure and calls in the list within the loaded rda into separate objects.
 
-```r
+``` r
 #| label: 'fig-recruitment-setup'
 #| echo: false 
 #| warning: false 
@@ -356,9 +369,9 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){
 
 # if the recruitment figure rda does not exist, don't evaluate the next chunk
 } else {eval_recruitment <- FALSE}
-``` 
+```
 
-```r
+``` r
 #| label: 'fig-recruitment-plot'
 #| echo: false 
 #| warning: false 
@@ -366,12 +379,11 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){
 #| fig-cap: !expr if(eval_recruitment) recruitment_cap 
 #| fig-alt: !expr if(eval_recruitment) recruitment_alt_text
 recruitment_plot
-``` 
+```
 
+You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. **Always check that a figure's alt text is accurate and complete.** To edit, simply make changes to the sentence(s) between the quotation marks. More guidance on writing alternative text is available on [`asar` GitHub Pages](https://nmfs-ost.github.io/asar/articles/index.html).
 
-You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. To edit, simply make changes to the sentence(s) between the quotation marks. More guidance on writing alternative text is available on [`asar` GitHub Pages](https://nmfs-ost.github.io/asar/articles/index.html).
-
-Currently, quarto does not include features for alternative text in PDFs, but the developers of asar are working on a way to get around this issue.
+Currently, Quarto does not include features for alternative text in PDFs, but the developers of `asar` are working on a way to get around this issue.
 
 ## Rendering
 
@@ -385,12 +397,11 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 
 ## Tips
 
--   DO NOT make changes to the area between the three dashes in the quarto skeleton file (`---`) unless you are very familiar with quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering.
+-   DO NOT make changes to the area between the three dashes in the Quarto skeleton file (`---`) unless you are very familiar with Quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering.
 
--   In the future, additional tables and figures will be available from the [satf](https://github.com/nmfs-ost/satf) R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
+-   In the future, additional tables and figures will be available from the [`satf`](https://github.com/nmfs-ost/satf) R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
 
-
-```r
+``` r
 #| label: ''
 #| echo: false
 #| warning: false
@@ -400,5 +411,6 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 satf::plot_recruitment(dat = output)
 ```
 
-
 -   `asar` is a continual work in progress. Version 1.0 is planned for release at the end of December of 2024 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
+
+-   Check out our [Frequently Asked Questions (FAQ) page](https://nmfs-ost.github.io/asar/articles/faqs.html) for more guidance using `asar`.
