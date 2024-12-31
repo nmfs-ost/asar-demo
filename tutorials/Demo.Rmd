@@ -444,5 +444,5 @@ satf::plot_recruitment(dat = output)
 
 -   Check out our [Frequently Asked Questions (FAQ) page](https://nmfs-ost.github.io/asar/articles/faqs.html) for more guidance using `asar`.
 
--     [Closed issues](https://github.com/nmfs-ost/asar/issues?q=is%3Aissue+is%3Aclosed) are another great resource that could provide the answer to a potential question that you might have. These issues will be solved and should provide you a good direction to move in if encountering an issue.
+-   Our [closed issues](https://github.com/nmfs-ost/asar/issues?q=is%3Aissue+is%3Aclosed) are another great resource that could provide the answer to a potential question that you might have. These issues will be solved and should provide you a good direction to move in if encountering an issue.
 
