@@ -120,6 +120,16 @@ will provide descriptions of other tools that will help a user implement
 this package into their workflow.</p>
 <p>This tutorial is an extension of the example presented on the <a
 href="https://nmfs-ost.github.io/asar/">home page</a>.</p>
+<div id="section-directions" class="section level3">
+<h3>Directions</h3>
+<p>For most navigation, click the ‘Next Topic’ button at the bottom of
+the page or select a topic from the navigation bar on the left hand side
+of the screen. Make sure to hit the ‘Next Topic’ button after each
+part.</p>
+<p>In some cases, set of tabs is located on a page in which you will
+still need to hit the ‘Next Topic’ button to see the other tabs. We will
+hopefully fix this issue in the future.</p>
+</div>
 </div>
 <div id="section-recorded-demo" class="section level2">
 <h2>Recorded Demo</h2>
@@ -140,8 +150,8 @@ sole stock assessment report. Below are links to two useful folders:</p>
 href="https://github.com/nmfs-ost/asar-demo/tree/main/data">materials
 you might need, such as example data</a>.</li>
 <li>A folder containing <a
-href="https://github.com/nmfs-ost/asar-demo/tree/main/stock_assessment_reports">the
-files that should be produced if you recreate this example</a>.</li>
+href="https://github.com/nmfs-ost/asar-demo/tree/main/report">the files
+that should be produced if you recreate this example</a>.</li>
 </ol>
 <div id="section-species-background" class="section level3">
 <h3>Species Background</h3>
@@ -196,7 +206,12 @@ Options &gt; General.</p>
 <p>In this script, you will execute the primary functions of this
 package and create a template for a stock assessment report. It can be
 helpful to save this script for later use or future assessments.</p>
-<p><img src="images/new_script.PNG" /></p>
+<div class="float">
+<img src="images/new_script.PNG"
+alt="Screenshot of an R script with code used to start making a stock assessment report with asar." />
+<div class="figcaption">Screenshot of an R script with code used to
+start making a stock assessment report with asar.</div>
+</div>
 </div>
 <div id="section-relative-paths" class="section level2">
 <h2>Relative Paths</h2>
@@ -222,11 +237,11 @@ your working directory. The model results files are the Report.sso file
 (SS3) or the .rdat file produced after running the ADMB2R routines
 (BAM).</p>
 <p>You can download the petrale sole output file <a
-href="https://github.com/nmfs-ost/asar/tree/main/data/Report.sso">here</a>.</p>
+href="https://github.com/nmfs-ost/asar-demo/blob/main/data/Report.sso">here</a>.</p>
 <p><strong>Example:</strong> The following example will load the
 Report.sso file from your working directory using the <code>here</code>
 function.</p>
-<pre class="r"><code>output_file &lt;- load(here::here(&quot;Report.sso))</code></pre>
+<pre class="r"><code>output_file &lt;- here::here(&quot;Report.sso&quot;)</code></pre>
 </div>
 <div id="section-preparing-to-run-create_template"
 class="section level2 tabset">
@@ -241,10 +256,10 @@ sets. There are two options for running this function.</p>
 </ol>
 <pre class="r"><code>asar::convert_output(
   output_file = output_file,
-  outdir = getwd(), # or wherever you saved the example output file
+  outdir = here::here(), # or wherever you saved the example output file
   model = &quot;SS3&quot;,
   file_save = TRUE,
-  savedir = getwd(),
+  savedir = here::here(),
   save_name = &quot;petrale_sole_std_output&quot;
 )</code></pre>
 <ol start="2" style="list-style-type: decimal">
@@ -266,9 +281,11 @@ increase the automation of stock assessment reports. The input for
 <code>satf</code> is a standardized framework of data produced from the
 <code>asar</code> function <code>convert_output</code> (i.e., a
 “converted” model results file). The output is a collection of pre-coded
-tables (made with <code>flextable</code>) and figures (made with
-<code>ggplot2</code>). Both of these packages can operate independently
-as desired.</p>
+tables (made with <a
+href="https://github.com/davidgohel/flextable"><code>flextable</code></a>)
+and figures (made with <a
+href="https://github.com/tidyverse/ggplot2"><code>ggplot2</code></a>).
+Both of these packages can operate independently as desired.</p>
 <p>The user has two options to create tables and figures with
 <code>satf</code>:</p>
 <ol style="list-style-type: decimal">
@@ -276,12 +293,15 @@ as desired.</p>
 <code>asar</code>. To do this, run the following code BEFORE running
 <code>asar::create_template</code>:</li>
 </ol>
-<pre><code>satf::exp_all_figs_tables(
-  dat,
+<pre class="r"><code># Read in converted output file
+output &lt;- utils::read.csv(here::here(&quot;petrale_sole_std_output.csv&quot;))
+# Run function
+satf::exp_all_figs_tables(
+  dat = output,
   end_year = 2022,
   rda_dir = here::here(),
-  ref_line = &quot;unfished&quot;,
-  ref_line_sb = &quot;target&quot;,
+  ref_line = &quot;msy&quot;,
+  ref_line_sb = &quot;msy&quot;,
   indices_unit_label = &quot;CPUE&quot;)</code></pre>
 <p><em>Note:</em> The dat file in the above function should be the
 converted dataframe from the <code>convert_output</code> function ran
@@ -317,7 +337,12 @@ must check that the captions and alternative text are complete and
 accurate, then update them yourself if needed. See the <a
 href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html">accessibility-related
 vignette</a> for guidance.</p>
-<p><img src="images/rda_folder.PNG" /></p>
+<div class="float">
+<img src="images/rda_folder.PNG"
+alt="Screenshot of an RStudio output pane showing an example rda file (recruitment_figure.rda)." />
+<div class="figcaption">Screenshot of an RStudio output pane showing an
+example rda file (recruitment_figure.rda).</div>
+</div>
 </div>
 </div>
 <div id="section-run-create_template" class="section level2">
@@ -353,7 +378,8 @@ package</a>.</p>
   param_names = c(&quot;nf&quot;,&quot;sf&quot;),
   param_values = c(&quot;North fleet&quot;, &quot;South fleet&quot;),
   resdir = here::here(), # indicate where the model output is located
-  model_results = &quot;petrale_sole_std_output.csv&quot; # converted model output
+  model_results = &quot;petrale_sole_std_output.csv&quot;, # converted model output
+  rda_dir = here::here() # directory where the rda files were made in previous step
 )</code></pre>
 </div>
 <div id="section-create_template-customizations"
@@ -381,9 +407,9 @@ will include each author’s institution name and address.</p>
 <p>Note: While we have made efforts to create an extensive list of
 assessment authors across NOAA, there may be instances where you or a
 colleague does not have their associated affiliation since they are not
-in our database. In this case, you can submit an <a
-href="https://github.com/nmfs-ost/asar/issues/19">issue here</a> and you
-will be added as soon as possible.</p>
+in our database. In this case, you can <a
+href="https://github.com/nmfs-ost/asar/issues/19">submit an issue
+here</a> and you will be added as soon as possible.</p>
 <p><em>In the meantime, another author can be added using the argument
 <code>add_author</code>. Their affiliation can be manually added after
 creating the template following the same formatting in the YAML as the
@@ -457,7 +483,7 @@ in the R console. A message is displayed that let’s you know where the
 template was saved and to fill out the template.</p>
 <p><code>asar</code> is only a partially automated tool that still
 requires the analyst to complete the bulk of the content in the report.
-Future release will allow the user to call on old assessments that were
+Future releases will allow the user to call on old assessments that were
 made using <code>asar::create_template(new_template=FALSE)</code>, so
 only minor adjustments will be made as needed to the current
 assessment.</p>
@@ -468,11 +494,22 @@ assessment.</p>
 generated with the folder. The user will not need to modify the
 ‘skeleton.qmd’, but all other Quarto files will need to be filled
 in.</p>
-<p><img src="images/example-pop-up.PNG" /></p>
+<div class="float">
+<img src="images/example-pop-up.PNG"
+alt="Screenshot of the beginning of a skeleton .qmd file, showing document title, authors, and author affiliations." />
+<div class="figcaption">Screenshot of the beginning of a skeleton .qmd
+file, showing document title, authors, and author affiliations.</div>
+</div>
 <p>Each section Quarto file contains pre-built heading tags and
 subsections with details indicating what the user should touch on for
 each section.</p>
-<p><img src="images/example-section.PNG" /></p>
+<div class="float">
+<img src="images/example-section.PNG"
+alt="Screenshot of an example section .qmd file (“Data” section), showing the title and suggested topics for the report’s section." />
+<div class="figcaption">Screenshot of an example section .qmd file
+(“Data” section), showing the title and suggested topics for the
+report’s section.</div>
+</div>
 <p>The optional addition of new sections as indicated by the user in the
 <code>create_template</code> function will be blank with the exception
 of a pre-built header with the new section name.</p>
@@ -485,6 +522,10 @@ will be added in the order listed)</li>
 </ul>
 <pre class="r"><code>new_section = &quot;Management&quot;
 section_location = &quot;before-discussion&quot;</code></pre>
+<p>For more information on markdown notation and how to efficiently
+write a report in Quarto, see our <a
+href="https://nmfs-ost.github.io/asar/articles/markdown_notation.html">markdown
+help page</a>!</p>
 </div>
 </div>
 <div id="section-figure-and-table-chunks" class="section level2">
@@ -495,13 +536,14 @@ functions, it allows you to evaluate results files quickly without also
 generating the report. However, these two packages were co-developed to
 seamlessly integrate with one another and streamline the stock
 assessment workflow.</p>
-<p>In the <code>tables.qmd</code> and <code>figures.qmd</code> Quarto
-files located in your folder, there will be a series of pre-made tables
-and figures that includes pre-written generic captions and alternative
-text. You are able to include or not include these objects at will. We
-recommend to include all default objects, but if a table or figure
-doesn’t apply, you are able to prevent the object from being added to
-the report by changing the option of <strong>eval</strong> to false.</p>
+<p>In the <code>08_tables.qmd</code> and <code>09_figures.qmd</code>
+Quarto files located in your folder, there will be a series of pre-made
+tables and figures that includes pre-written generic captions and
+alternative text. You are able to include or not include these objects
+at will. We recommend to include all default objects, but if a table or
+figure doesn’t apply, you are able to prevent the object from being
+added to the report by changing the option of <strong>eval</strong> to
+false.</p>
 <p>Here is an example:</p>
 <p>For each object (table or figure), there will be two chunks to
 properly call and create the object. The first loads in the rda object
@@ -538,15 +580,30 @@ if (file.exists(file.path(rda_dir, &#39;recruitment_figure.rda&#39;))){
 #| fig-cap: !expr if(eval_recruitment) recruitment_cap 
 #| fig-alt: !expr if(eval_recruitment) recruitment_alt_text
 recruitment_plot</code></pre>
+<p>The figures and tables are designed to be adjustable to the user by
+applying the same notation as one would when creating a
+<code>flextable</code> or <code>ggplot2</code> object. For example, in
+<code>ggplot2</code>, when adding a new theme, you would add it on using
+a “+” to the ggplot object following with the theme code:</p>
+<pre class="r"><code>gg_obj &lt;- ggplot(data, aes(x,y)) +
+geom_line()
+
+gg_obj + theme()</code></pre>
+<p>For any premade table, you can add onto the object using the native
+pipe operator and other <code>flextable</code> functions. For example,
+we can add an additional row of headers using the following
+notation:</p>
+<pre class="r"><code>flex_obj &lt;- flextable(data) |&gt; bold(part = &quot;header&quot;)
+
+flex_obj |&gt; add_header()</code></pre>
 <p>You can also adjust figure captions and alternative text from the
 arguments <code>fig-cap</code> and <code>fig-alt</code>. These two areas
 contain pre-generated generic text that applies to the table/figure.
 <strong>Always check that a figure’s alt text is accurate and
 complete.</strong> To edit, simply make changes to the sentence(s)
-between the quotation marks. More guidance on writing alternative text
-is available on <a
-href="https://nmfs-ost.github.io/asar/articles/index.html"><code>asar</code>
-GitHub Pages</a>.</p>
+between the quotation marks. Visit the <a
+href="https://nmfs-ost.github.io/asar/articles/accessibility_guide.html">accessibility-related
+vignette</a> for more guidance.</p>
 <p>Currently, Quarto does not include features for alternative text in
 PDFs, but the developers of <code>asar</code> are working on a way to
 get around this issue.</p>
@@ -559,7 +616,13 @@ report. User should click the ‘render’ button at the top of the script
 when using R studio or run the following code in the
 <strong>terminal</strong>:</p>
 <pre class="r"><code>quarto render SAR_USWC_Petrale_sole_skeleton.qmd</code></pre>
-<p><img src="images/example-pop-up-highlight.PNG" /></p>
+<div class="float">
+<img src="images/example-pop-up-highlight.PNG"
+alt="Screenshot of the beginning of a skeleton .qmd file. A yellow rectangle shows the location of the source pane’s “Render” button." />
+<div class="figcaption">Screenshot of the beginning of a skeleton .qmd
+file. A yellow rectangle shows the location of the source pane’s
+“Render” button.</div>
+</div>
 </div>
 <div id="section-tips" class="section level2">
 <h2>Tips</h2>
@@ -584,14 +647,20 @@ a square with a c in it or manually write in</p></li>
 satf::plot_recruitment(dat = output)</code></pre>
 <ul>
 <li><p><code>asar</code> is a continual work in progress. Version 1.0 is
-planned for release at the end of December of 2024 with additional
-features added in through 2025. Please leave an <a
+planned for release in Janurary 2025 with additional features added in
+through 2025. Please leave an <a
 href="https://github.com/nmfs-ost/asar/issues">issue</a> for any bugs
 you may run into.</p></li>
 <li><p>Check out our <a
 href="https://nmfs-ost.github.io/asar/articles/faqs.html">Frequently
 Asked Questions (FAQ) page</a> for more guidance using
-<code>asar</code>. 
+<code>asar</code>.</p></li>
+<li><p>Our <a
+href="https://github.com/nmfs-ost/asar/issues?q=is%3Aissue+is%3Aclosed">closed
+issues</a> are another great resource that could provide the answer to a
+potential question that you might have. These issues will be solved and
+should provide you a good direction to move in if encountering an issue.
+
 <script type="application/shiny-prerendered" data-context="server-start">
 library(learnr)
 </script>
@@ -624,7 +693,7 @@ session$onSessionEnded(function() {
 <!--/html_preserve-->
 <!--html_preserve-->
 <script type="application/shiny-prerendered" data-context="execution_dependencies">
-{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]}},"value":[{"type":"character","attributes":{},"value":["backports","base","bslib","cachem","checkmate","cli","compiler","datasets","digest","evaluate","fastmap","fontawesome","graphics","grDevices","htmltools","htmlwidgets","httpuv","jquerylib","jsonlite","knitr","later","learnr","lifecycle","magrittr","methods","mime","promises","R6","Rcpp","rlang","rmarkdown","rprojroot","rstudioapi","sass","shiny","stats","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.5.0","4.2.2","0.8.0","1.1.0","2.3.2","3.6.3","4.2.2","4.2.2","0.6.37","1.0.1","1.2.0","0.5.3","4.2.2","4.2.2","0.5.8.1","1.6.4","1.6.15","0.1.4","1.8.9","1.49","1.3.2","0.11.5","1.0.4","2.0.3","4.2.2","0.12","1.3.0","2.5.1","1.0.13-1","1.1.4","2.29","2.0.4","0.17.1","0.4.9","1.9.1","4.2.2","4.2.2","4.2.2","3.0.2","0.49","1.8-4","2.3.10"]}]}]}
+{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages"]}},"value":[{"type":"list","attributes":{"names":{"type":"character","attributes":{},"value":["packages","version"]},"class":{"type":"character","attributes":{},"value":["data.frame"]},"row.names":{"type":"integer","attributes":{},"value":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42]}},"value":[{"type":"character","attributes":{},"value":["backports","base","bslib","cachem","checkmate","cli","compiler","datasets","digest","evaluate","fastmap","fontawesome","graphics","grDevices","htmltools","htmlwidgets","httpuv","jquerylib","jsonlite","knitr","later","learnr","lifecycle","magrittr","methods","mime","promises","R6","Rcpp","rlang","rmarkdown","rprojroot","rstudioapi","sass","shiny","stats","tools","utils","withr","xfun","xtable","yaml"]},{"type":"character","attributes":{},"value":["1.5.0","4.2.2","0.8.0","1.1.0","2.3.2","3.6.3","4.2.2","4.2.2","0.6.37","1.0.1","1.2.0","0.5.3","4.2.2","4.2.2","0.5.8.1","1.6.4","1.6.15","0.1.4","1.8.9","1.49","1.4.1","0.11.5","1.0.4","2.0.3","4.2.2","0.12","1.3.2","2.5.1","1.0.13-1","1.1.4","2.29","2.0.4","0.17.1","0.4.9","1.10.0","4.2.2","4.2.2","4.2.2","3.0.2","0.49","1.8-4","2.3.10"]}]}]}
 </script>
 <!--/html_preserve-->
 </div>

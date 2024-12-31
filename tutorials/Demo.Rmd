@@ -45,7 +45,7 @@ This tutorial is an extension of the example presented on the [home page](https:
 
 ### Directions
 
-For most navigation, click the 'Next Topic' button at the bottom of the page or select a topic from the navigation bar on the left hand side of the screen. Make sure to hit the 'Next Topic' button after each part.  
+For most navigation, click the 'Next Topic' button at the bottom of the page or select a topic from the navigation bar on the left hand side of the screen. Make sure to hit the 'Next Topic' button after each part.
 
 In some cases, set of tabs is located on a page in which you will still need to hit the 'Next Topic' button to see the other tabs. We will hopefully fix this issue in the future.
 
@@ -94,7 +94,7 @@ Tip: If a working directory is not set manually, the function will default to th
 
 In this script, you will execute the primary functions of this package and create a template for a stock assessment report. It can be helpful to save this script for later use or future assessments.
 
-![](images/new_script.PNG)
+![Screenshot of an R script with code used to start making a stock assessment report with asar.](images/new_script.PNG)
 
 ## Relative Paths {#relative-paths}
 
@@ -156,7 +156,7 @@ The user has two options to create tables and figures with `satf`:
 
 (1) Create all figures and tables with `satf`, then run `asar`. To do this, run the following code BEFORE running `asar::create_template`:
 
-```r
+``` r
 # Read in converted output file
 output <- utils::read.csv(here::here("petrale_sole_std_output.csv"))
 # Run function
@@ -201,7 +201,7 @@ Optional:
 
 After selecting one of the two above options, you should have created a folder that contains rda files of tables and figures with their associated caption and alternative text (all pre-built for you!). You must check that the captions and alternative text are complete and accurate, then update them yourself if needed. See the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for guidance.
 
-![](images/rda_folder.PNG)
+![Screenshot of an RStudio output pane showing an example rda file (recruitment_figure.rda).](images/rda_folder.PNG)
 
 ## Run `create_template`
 
@@ -256,7 +256,7 @@ author:
 
 The option to remove affiliation altogether is present by setting `include_affiliation = FALSE`.
 
-Note: While we have made efforts to create an extensive list of assessment authors across NOAA, there may be instances where you or a colleague does not have their associated affiliation since they are not in our database. In this case, you can submit an [issue here](https://github.com/nmfs-ost/asar/issues/19) and you will be added as soon as possible.
+Note: While we have made efforts to create an extensive list of assessment authors across NOAA, there may be instances where you or a colleague does not have their associated affiliation since they are not in our database. In this case, you can [submit an issue here](https://github.com/nmfs-ost/asar/issues/19) and you will be added as soon as possible.
 
 *In the meantime, another author can be added using the argument `add_author`. Their affiliation can be manually added after creating the template following the same formatting in the YAML as the other authors.*
 
@@ -328,11 +328,11 @@ During processing, you will see progress for the template being built in the R c
 
 There will be a series of Quarto (.qmd) files along with some others generated with the folder. The user will not need to modify the 'skeleton.qmd', but all other Quarto files will need to be filled in.
 
-![](images/example-pop-up.PNG)
+![Screenshot of the beginning of a skeleton .qmd file, showing document title, authors, and author affiliations.](images/example-pop-up.PNG)
 
 Each section Quarto file contains pre-built heading tags and subsections with details indicating what the user should touch on for each section.
 
-![](images/example-section.PNG)
+![Screenshot of an example section .qmd file ("Data" section), showing the title and suggested topics for the report's section.](images/example-section.PNG)
 
 The optional addition of new sections as indicated by the user in the `create_template` function will be blank with the exception of a pre-built header with the new section name.
 
@@ -344,7 +344,7 @@ new_section = "Management"
 section_location = "before-discussion"
 ```
 
-For more information on markdown notation and how to efficiently write a report in quarto see our [markdown help page](https://nmfs-ost.github.io/asar/articles/markdown_notation.html)!
+For more information on markdown notation and how to efficiently write a report in Quarto, see our [markdown help page](https://nmfs-ost.github.io/asar/articles/markdown_notation.html)!
 
 ## Figure and Table Chunks
 
@@ -395,7 +395,7 @@ recruitment_plot
 
 The figures and tables are designed to be adjustable to the user by applying the same notation as one would when creating a `flextable` or `ggplot2` object. For example, in `ggplot2`, when adding a new theme, you would add it on using a "+" to the ggplot object following with the theme code:
 
-```r
+``` r
 gg_obj <- ggplot(data, aes(x,y)) +
 geom_line()
 
@@ -404,13 +404,13 @@ gg_obj + theme()
 
 For any premade table, you can add onto the object using the native pipe operator and other `flextable` functions. For example, we can add an additional row of headers using the following notation:
 
-```r
+``` r
 flex_obj <- flextable(data) |> bold(part = "header")
 
 flex_obj |> add_header()
 ```
 
-You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. **Always check that a figure's alt text is accurate and complete.** To edit, simply make changes to the sentence(s) between the quotation marks. More guidance on writing alternative text is available on [`asar` GitHub Pages](https://nmfs-ost.github.io/asar/articles/index.html).
+You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. **Always check that a figure's alt text is accurate and complete.** To edit, simply make changes to the sentence(s) between the quotation marks. Visit the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for more guidance.
 
 Currently, Quarto does not include features for alternative text in PDFs, but the developers of `asar` are working on a way to get around this issue.
 
@@ -422,7 +422,7 @@ After filling out all sections (and leaving ones that are not applicable with a 
 quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 ```
 
-![](images/example-pop-up-highlight.PNG)
+![Screenshot of the beginning of a skeleton .qmd file. A yellow rectangle shows the location of the source pane's "Render" button.](images/example-pop-up-highlight.PNG)
 
 ## Tips
 
@@ -445,4 +445,3 @@ satf::plot_recruitment(dat = output)
 -   Check out our [Frequently Asked Questions (FAQ) page](https://nmfs-ost.github.io/asar/articles/faqs.html) for more guidance using `asar`.
 
 -   Our [closed issues](https://github.com/nmfs-ost/asar/issues?q=is%3Aissue+is%3Aclosed) are another great resource that could provide the answer to a potential question that you might have. These issues will be solved and should provide you a good direction to move in if encountering an issue.
-
