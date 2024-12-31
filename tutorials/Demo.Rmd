@@ -43,6 +43,12 @@ The `asar` R package is a tool intended to improve and streamline the workflows 
 
 This tutorial is an extension of the example presented on the [home page](https://nmfs-ost.github.io/asar/).
 
+### Directions
+
+For most navigation, click the 'Next Topic' button at the bottom of the page or select a topic from the navigation bar on the left hand side of the screen. Make sure to hit the 'Next Topic' button after each part.  
+
+In some cases, set of tabs is located on a page in which you will still need to hit the 'Next Topic' button to see the other tabs. We will hopefully fix this issue in the future.
+
 ## Recorded Demo
 
 Below is a shortened demonstration of some of the content in this tutorial. Please note that this demo was recorded in October 2024, before the tool's first release in January 2025. If you encounter issues with your code, double-check with the package's documentation, which will be up-to-date.
@@ -105,12 +111,12 @@ The user can now designate paths within the folder containing the 'here' file. N
 
 For this step, we recommend either placing the model results file for either Stock Synthesis (SS3) or Beaufort Assessment Model (BAM) into your working directory. The model results files are the Report.sso file (SS3) or the .rdat file produced after running the ADMB2R routines (BAM).
 
-You can download the petrale sole output file [here](https://github.com/nmfs-ost/asar/tree/main/data/Report.sso).
+You can download the petrale sole output file [here](https://github.com/nmfs-ost/asar-demo/blob/main/data/Report.sso).
 
 **Example:** The following example will load the Report.sso file from your working directory using the `here` function.
 
 ``` r
-output_file <- load(here::here("Report.sso))
+output_file <- here::here("Report.sso")
 ```
 
 ## Preparing to Run `create_template` {.tabset}
@@ -124,10 +130,10 @@ We recommend converting your output file outside of the `create_template` functi
 ``` r
 asar::convert_output(
   output_file = output_file,
-  outdir = getwd(), # or wherever you saved the example output file
+  outdir = here::here(), # or wherever you saved the example output file
   model = "SS3",
   file_save = TRUE,
-  savedir = getwd(),
+  savedir = here::here(),
   save_name = "petrale_sole_std_output"
 )
 ```
@@ -144,19 +150,22 @@ output <- asar::convert_output(
 
 ### Prepare Tables and Figures
 
-Figures and tables are created with the [`satf`](https://github.com/nmfs-ost/satf) package, which was designed to work in conjunction with `asar` to increase the automation of stock assessment reports. The input for `satf` is a standardized framework of data produced from the `asar` function `convert_output` (i.e., a "converted" model results file). The output is a collection of pre-coded tables (made with `flextable`) and figures (made with `ggplot2`). Both of these packages can operate independently as desired.
+Figures and tables are created with the [`satf`](https://github.com/nmfs-ost/satf) package, which was designed to work in conjunction with `asar` to increase the automation of stock assessment reports. The input for `satf` is a standardized framework of data produced from the `asar` function `convert_output` (i.e., a "converted" model results file). The output is a collection of pre-coded tables (made with [`flextable`](https://github.com/davidgohel/flextable)) and figures (made with [`ggplot2`](https://github.com/tidyverse/ggplot2)). Both of these packages can operate independently as desired.
 
 The user has two options to create tables and figures with `satf`:
 
 (1) Create all figures and tables with `satf`, then run `asar`. To do this, run the following code BEFORE running `asar::create_template`:
 
-```         
+```r
+# Read in converted output file
+output <- utils::read.csv(here::here("petrale_sole_std_output.csv"))
+# Run function
 satf::exp_all_figs_tables(
-  dat,
+  dat = output,
   end_year = 2022,
   rda_dir = here::here(),
-  ref_line = "unfished",
-  ref_line_sb = "target",
+  ref_line = "msy",
+  ref_line_sb = "msy",
   indices_unit_label = "CPUE")
 ```
 
@@ -221,7 +230,8 @@ asar::create_template(
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
   resdir = here::here(), # indicate where the model output is located
-  model_results = "petrale_sole_std_output.csv" # converted model output
+  model_results = "petrale_sole_std_output.csv", # converted model output
+  rda_dir = here::here() # directory where the rda files were made in previous step
 )
 ```
 
@@ -312,7 +322,7 @@ asar::create_template(
 
 During processing, you will see progress for the template being built in the R console. A message is displayed that let's you know where the template was saved and to fill out the template.
 
-`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future release will allow the user to call on old assessments that were made using `asar::create_template(new_template=FALSE)`, so only minor adjustments will be made as needed to the current assessment.
+`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future releases will allow the user to call on old assessments that were made using `asar::create_template(new_template=FALSE)`, so only minor adjustments will be made as needed to the current assessment.
 
 ### Sections
 
@@ -334,11 +344,13 @@ new_section = "Management"
 section_location = "before-discussion"
 ```
 
+For more information on markdown notation and how to efficiently write a report in quarto see our [markdown help page](https://nmfs-ost.github.io/asar/articles/markdown_notation.html)!
+
 ## Figure and Table Chunks
 
 The pre-made tables and figures are generated through the use of a separate package called `satf`. By separating these two functions, it allows you to evaluate results files quickly without also generating the report. However, these two packages were co-developed to seamlessly integrate with one another and streamline the stock assessment workflow.
 
-In the `tables.qmd` and `figures.qmd` Quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend to include all default objects, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
+In the `08_tables.qmd` and `09_figures.qmd` Quarto files located in your folder, there will be a series of pre-made tables and figures that includes pre-written generic captions and alternative text. You are able to include or not include these objects at will. We recommend to include all default objects, but if a table or figure doesn't apply, you are able to prevent the object from being added to the report by changing the option of **eval** to false.
 
 Here is an example:
 
@@ -381,6 +393,23 @@ if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){
 recruitment_plot
 ```
 
+The figures and tables are designed to be adjustable to the user by applying the same notation as one would when creating a `flextable` or `ggplot2` object. For example, in `ggplot2`, when adding a new theme, you would add it on using a "+" to the ggplot object following with the theme code:
+
+```r
+gg_obj <- ggplot(data, aes(x,y)) +
+geom_line()
+
+gg_obj + theme()
+```
+
+For any premade table, you can add onto the object using the native pipe operator and other `flextable` functions. For example, we can add an additional row of headers using the following notation:
+
+```r
+flex_obj <- flextable(data) |> bold(part = "header")
+
+flex_obj |> add_header()
+```
+
 You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. **Always check that a figure's alt text is accurate and complete.** To edit, simply make changes to the sentence(s) between the quotation marks. More guidance on writing alternative text is available on [`asar` GitHub Pages](https://nmfs-ost.github.io/asar/articles/index.html).
 
 Currently, Quarto does not include features for alternative text in PDFs, but the developers of `asar` are working on a way to get around this issue.
@@ -411,6 +440,9 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 satf::plot_recruitment(dat = output)
 ```
 
--   `asar` is a continual work in progress. Version 1.0 is planned for release at the end of December of 2024 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
+-   `asar` is a continual work in progress. Version 1.0 is planned for release in Janurary 2025 with additional features added in through 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
 
 -   Check out our [Frequently Asked Questions (FAQ) page](https://nmfs-ost.github.io/asar/articles/faqs.html) for more guidance using `asar`.
+
+-     [Closed issues](https://github.com/nmfs-ost/asar/issues?q=is%3Aissue+is%3Aclosed) are another great resource that could provide the answer to a potential question that you might have. These issues will be solved and should provide you a good direction to move in if encountering an issue.
+

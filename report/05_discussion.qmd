@@ -1,0 +1,5 @@
+## Discussion
+
+<!--- The discussion is dependent on analyst/assessment/region. Include subsections discussing ecosystem considerations (if applicable) and research recommendations/improvements to the assessment. --->
+
+Here is a use of an in-text reference to a key quantitiy such as target spawning biomass as `r SBtarg` kgs.

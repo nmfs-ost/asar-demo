@@ -4,10 +4,14 @@
 
 # Application of ASAR to a recently published stock assessment report
 # petrale sole (U.S. West Coast)
+
+# Package dependencies for downloading
 install.packages('remotes')
 install.packages('tinytex')
+install.packages('here')
 library(tinytex)
 
+# Install package(s)
 remotes::install_github("nmfs-ost/asar@dev-1.0") # automated stock assessment reporting
 remotes::install_github("nmfs-ost/satf") # stock assessment tables and figures
 

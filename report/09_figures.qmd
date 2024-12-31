@@ -1,0 +1,190 @@
+## Figures 
+ 
+```{r} 
+#| label: 'set-rda-dir-figs'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+rda_dir <- 'C:/Users/samantha.schiano/Documents/GitHub/asar-demo/report/rda_files'
+``` 
+
+```{r} 
+#| label: 'fig-recruitment-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'recruitment_figure.rda'))
+
+# save rda with plot-specific name
+recruitment_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+recruitment_plot <- recruitment_plot_rda$figure
+recruitment_cap <- recruitment_plot_rda$cap
+recruitment_alt_text <- recruitment_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-recruitment-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: recruitment_cap 
+#| fig-alt: recruitment_alt_text
+recruitment_plot
+``` 
+
+```{r} 
+#| label: 'fig-spawning_biomass-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'spawning.biomass_figure.rda'))
+
+# save rda with plot-specific name
+spawning_biomass_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+spawning_biomass_plot <- spawning_biomass_plot_rda$figure
+spawning_biomass_cap <- spawning_biomass_plot_rda$cap
+spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-spawning_biomass-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: spawning_biomass_cap 
+#| fig-alt: spawning_biomass_alt_text
+spawning_biomass_plot
+``` 
+
+```{r} 
+#| label: 'fig-biomass-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'biomass_figure.rda'))
+
+# save rda with plot-specific name
+biomass_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+biomass_plot <- biomass_plot_rda$figure
+biomass_cap <- biomass_plot_rda$cap
+biomass_alt_text <- biomass_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-biomass-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: biomass_cap 
+#| fig-alt: biomass_alt_text
+biomass_plot
+``` 
+
+```{r} 
+#| label: 'fig-landings-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'landings_figure.rda'))
+
+# save rda with plot-specific name
+landings_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+landings_plot <- landings_plot_rda$figure
+landings_cap <- landings_plot_rda$cap
+landings_alt_text <- landings_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-landings-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: landings_cap 
+#| fig-alt: landings_alt_text
+landings_plot
+``` 
+
+```{r} 
+#| label: 'fig-recruitment_deviations-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'recruitment.deviations_figure.rda'))
+
+# save rda with plot-specific name
+recruitment_deviations_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+recruitment_deviations_plot <- recruitment_deviations_plot_rda$figure
+recruitment_deviations_cap <- recruitment_deviations_plot_rda$cap
+recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-recruitment_deviations-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: recruitment_deviations_cap 
+#| fig-alt: recruitment_deviations_alt_text
+recruitment_deviations_plot
+``` 
+
+```{r} 
+#| label: 'fig-spawning_recruitment-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'sr_figure.rda'))
+
+# save rda with plot-specific name
+spawning_recruitment_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+spawning_recruitment_plot <- spawning_recruitment_plot_rda$figure
+spawning_recruitment_cap <- spawning_recruitment_plot_rda$cap
+spawning_recruitment_alt_text <- spawning_recruitment_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-spawning_recruitment-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| fig-cap: spawning_recruitment_cap 
+#| fig-alt: spawning_recruitment_alt_text
+spawning_recruitment_plot
+``` 
+

@@ -1,0 +1,39 @@
+## Tables 
+ 
+```{r} 
+#| label: 'set-rda-dir-tbls'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+library(flextable)
+rda_dir <- 'C:/Users/samantha.schiano/Documents/GitHub/asar-demo/report/rda_files'
+``` 
+
+```{r} 
+#| label: 'tbl-indices-setup'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+# load rda
+load(file.path(rda_dir, 'indices.abundance_table.rda'))
+
+# save rda with plot-specific name
+indices_table_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save table, caption as separate objects
+indices_table <- indices_table_rda$table
+indices_cap <- indices_table_rda$cap
+``` 
+
+```{r} 
+#| label: 'tbl-indices-plot'
+#| echo: false 
+#| warning: false 
+#| eval: true 
+#| tbl-cap: indices_cap
+indices_table
+``` 
+
