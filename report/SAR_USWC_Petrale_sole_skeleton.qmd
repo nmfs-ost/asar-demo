@@ -1,30 +1,31 @@
 ---
-title: 'Status of the Petrale sole stock off the U.S. West Coast in 2023'
+title: 'Status of Petrale sole stock off the U.S. West Coast in 2023'
 author:
   - name: 'Ian G. Taylor'
     affiliations:
       - name: 'NOAA Fisheries Northwest Fisheries Science Center'
         address: '2725 Montlake Boulevard East'
-        city: 'Seattle'
+        city: 'Seattle, WA'
         state: 'WA'
         postal-code: '98112-2097'
   - name: 'Vladlena Gertseva'
     affiliations:
       - name: 'NOAA Fisheries Northwest Fisheries Science Center'
         address: '2725 Montlake Boulevard East'
-        city: 'Seattle'
+        city: 'Seattle, WA'
         state: 'WA'
         postal-code: '98112-2097'
   - name: 'Nick Tolimieri'
     affiliations:
       - name: 'NOAA Fisheries Northwest Fisheries Science Center'
         address: '2725 Montlake Boulevard East'
-        city: 'Seattle'
+        city: 'Seattle, WA'
         state: 'WA'
         postal-code: '98112-2097'
 date: today
 lang: en 
 keep-tex: true 
+mainfont: 'Latin Modern Sans' 
 cover: support_files/Petrale_sole.png
 pdf-engine: lualatex
 format: 
@@ -36,7 +37,12 @@ format:
       - 'support_files/_titlepage.tex'
     include-in-header:
       - 'support_files/in-header.tex'
+    include-after-body:
+      text: |
+        \newpage{}
+        \printnoidxglossaries
     toc: true
+    sansfont: 'Latin Modern Sans'
     lof: true
     lot: true
     titlepage-geometry: 
@@ -52,27 +58,29 @@ params:
    region: 'U.S. West Coast'
    nf: 'North fleet'
    sf: 'South fleet'
-bibliography: 
--  asar_references.bib 
+bibliography:  
+  - asar_references.bib
 ---
 ```{r} 
 #| label: 'output_and_quantities'
 #| echo: false 
 #| warning: false 
-#| eval: true 
-# load converted output from asar::convert_output() 
-output <- utils::read.csv('C:/Users/samantha.schiano/Documents/GitHub/asar-demo/report/Petrale_sole_std_res_2023.csv') 
+#| eval: true
 # Call reference points and quantities below 
-output <- output |> 
+load(here::here("data", "petrale_output.rda"))
+output <- petrale_output |>
   dplyr::mutate(estimate = as.numeric(estimate), 
     uncertainty = as.numeric(uncertainty)) 
-start_year <- as.numeric(min(output$year, na.rm = TRUE)) 
-end_year <- (output |> 
-  dplyr::filter(!(year %in% c('Virg', 'Init', 'S/Rcurve', 'INIT')), 
-    !is.na(year)) |> 
-  dplyr::mutate(year = as.numeric(year)) |> 
-  dplyr::summarize(max_val = max(year)) |> 
-  dplyr::pull(max_val))-10
+ start_year <- output |> 
+  dplyr::filter(era == 'time') |> 
+  dplyr::summarise(min_year = min(year)) |> 
+  dplyr::pull(min_year) |> 
+  as.numeric() 
+end_year <- output |> 
+  dplyr::filter(era == 'time') |> 
+  dplyr::summarise(max_year = max(year)) |> 
+  dplyr::pull(max_year) |> 
+  as.numeric() 
 # subset output to remove quantities that are split by factor 
 output2 <- output |> 
   dplyr::filter(is.na(season), 
@@ -85,7 +93,8 @@ output2 <- output |>
 # terminal fishing mortality 
 Fend <- output2 |> 
   dplyr::filter(c(label == 'fishing_mortality' & year == end_year) | c(label == 'terminal_fishing_mortality' & is.na(year))) |>
-  dplyr::pull(estimate)
+  dplyr::pull(estimate) |>
+  unique()
 # fishing mortality at msy 
 # please change target if desired 
 Ftarg <- output2 |>
@@ -104,25 +113,26 @@ Btarg <- output2 |>
   dplyr::filter(c(grepl('biomass', label) & grepl('target', label) & estimate >1) | label == 'biomass_msy') |>
   dplyr::pull(estimate)
 # total catch in the last year 
-total_catch <- output |>
+total_catch <- output |> 
   dplyr::filter(grepl('^catch$', label), 
-  year == end_year,
-    is.na(fleet),
-    is.na(age),
-    is.na(area),
-    is.na(growth_pattern)) |>
-  dplyr::pull(estimate)
+    year == end_year) |> 
+  dplyr::group_by(year) |> 
+  dplyr::summarise(total_catch  = sum(estimate)) |> 
+  dplyr::ungroup() |> 
+  dplyr::pull(total_catch) 
 # total landings in the last year 
 total_landings <- output |>
-  dplyr::filter(grepl('landings_weight', label), year == end_year,
-    is.na(fleet),
-    is.na(age)) |>
-  dplyr::pull(estimate)
+  dplyr::filter(grepl('landings_observed', label), year == end_year) |>
+  dplyr::group_by(year) |>
+  dplyr::summarise(total_land  = sum(estimate)) |>
+  dplyr::ungroup() |>
+  dplyr::pull(total_land)
 # spawning biomass in the last year
-sbend <- output2 |>
+
+SBend <- output2 |>
   dplyr::filter(grepl('spawning_biomass', label), year == end_year) |>
   dplyr::pull(estimate) |>
-    unique()
+  unique()
 # overall natural mortality or at age 
 M <- output |>
   dplyr::filter(grepl('natural_mortality', label)) |>
@@ -130,12 +140,12 @@ M <- output |>
 # Biomass at msy 
 # to change to another reference point, replace msy in the following lines with other label 
 Bmsy <- output2 |>
-  dplyr::filter(c(grepl('biomass', label) & grepl('msy', label) & estimate >1) | label == 'biomass_msy') |>
+  dplyr::filter(c(grepl('^biomass', label) & grepl('msy', label) & estimate >1) | grepl('^biomass_msy$', label)) |>
   dplyr::pull(estimate)
 # target spawning biomass(msy) 
 # please change target if desired 
-SBtarg <- output2 |>
-  dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate >1) | label == 'spawning_biomass_msy$') |>
+SBmsy <- output2 |>
+  dplyr::filter(c(grepl('spawning_biomass', label) & grepl('msy$', label) & estimate > 1) | label == 'spawning_biomass_msy$') |>
   dplyr::pull(estimate)
 # steepness 
 h <- output |> 
@@ -143,17 +153,25 @@ h <- output |>
   dplyr::pull(estimate)
 # recruitment 
 R0 <- output |> 
-  dplyr::filter(grepl('R0', label) | grepl('recruitment_virgin', label)) |> 
+  dplyr::filter(grepl('R0$', label) | grepl('recruitment_virgin', label)) |> 
   dplyr::pull(estimate)
 # female SB (placeholder)
 
 ``` 
 
+
+
+{{< pagebreak >}}
+
+## Disclaimer {.unnumbered .unlisted}
+
+These materials do not constitute a formal publication and are for information only. They are in a pre-review, pre-decisional state and should not be formally cited or reproduced. They are to be considered provisional and do not represent any determination or policy of NOAA or the Department of Commerce.
+
 {{< pagebreak >}} 
 
 Please cite this publication as: 
 
-Taylor, I.G., V. Gertseva, N. Tolimieri. 2023. Status of the Petrale sole stock off the U.S. West Coast in 2023. NOAA Fisheries Science Center, Seattle, WA. 
+Taylor, I. G., Gertseva, V., and Tolimieri, N. 2023. Status of Petrale sole stock off the U.S. West Coast in 2023. Prepared by [COMMITTEE]. \pageref*{LastPage}{} pp.
 
  {{< pagebreak >}} 
 
@@ -295,17 +313,6 @@ cat(a, sep = '\n')
 #| echo: false
 #| warning: false
 a <- knitr::knit_child('09_figures.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'notes'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('10_notes.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```
 

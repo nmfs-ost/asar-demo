@@ -12,27 +12,28 @@ install.packages('here')
 library(tinytex)
 
 # Install package(s)
-remotes::install_github("nmfs-ost/asar@dev-1.0") # automated stock assessment reporting
+remotes::install_github("nmfs-ost/asar") # automated stock assessment reporting
 remotes::install_github("nmfs-ost/satf") # stock assessment tables and figures
 
 # Load here to form relative paths for files
 library(here)
 
 # Optional: convert output first
-# asar::convert_output(
-#   output_file = file.path(getwd(), "data", "Report.sso"),
-#   model = "ss3",
-#   file_save = TRUE,
-#   savedir = file.path(getwd(), "data"),
-#   save_name = "Petrale_sole_std_res"
-# )
+petrale_output <- asar::convert_output(
+  output_file = file.path(getwd(), "data", "Report.sso"),
+  model = "ss3"
+)
+
+# Save output in order to use and load it into quarto
+save(petrale_output, file = here::here("data", "petrale_output.rda"))
 
 # Optional: create all figures and tables before creating template
 #           *must run convert_output first
 # satf::exp_all_figs_tables(
 #   output,
 #   ref_line = "msy",
-#   ref_line_sb = "msy"
+#   ref_line_sb = "msy",
+#   indices_unit = ""
 # )
 
 # Template
@@ -44,20 +45,12 @@ asar::create_template(
   year = 2023,
   spp_latin = "Eopsetta jordani",
   file_dir = here::here(),
-  author = c("Ian G. Taylor", "Vladlena Gertseva", "Nick Tolimieri"),
+  author = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
   include_affiliation = TRUE,
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  # convert_output = TRUE, # comment out this line when output is already converted to standard framework
-  # resdir = here::here("data"), # comment out this line when output is already converted to standard framework
-  # model_results = "Report.sso", # comment out this line when output is already converted to standard framework
-  # model = "SS3", # comment out this line when output is already converted to standard framework
-  resdir = file.path(getwd(), "report"), # comment out this line when there is no standard output
-  model_results = "Petrale_sole_std_res_2023.csv", # comment out this line when there is no standard output
-  rda_dir = here::here('report'),
-  ref_line = "msy",
-  ref_line_sb = "msy"
+  model_results = petrale_output # comment out this line when there is no standard output
 )
 
 #### Debugging ####

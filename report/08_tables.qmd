@@ -1,39 +1,76 @@
-## Tables 
+# Tables {#sec-tables}
  
 ```{r} 
 #| label: 'set-rda-dir-tbls'
 #| echo: false 
 #| warning: false 
 #| eval: true 
+#| include: false
 library(flextable)
-rda_dir <- 'C:/Users/samantha.schiano/Documents/GitHub/asar-demo/report/rda_files'
+tables_dir <- 'C:/Users/samantha.schiano/Documents/GitHub/asar-demo/report/rda_files/tables'
 ``` 
 
 ```{r} 
-#| label: 'tbl-indices-setup'
+#| label: 'tab-bnc-setup'
 #| echo: false 
-#| warning: false 
-#| eval: true 
+#| warnings: false 
+#| eval: true
+# if the table rda exists:
+if (file.exists(file.path(tables_dir, 'bnc_table.rda'))){
+
 # load rda
-load(file.path(rda_dir, 'indices.abundance_table.rda'))
+load(file.path(tables_dir, 'bnc_table.rda'))
 
-# save rda with plot-specific name
-indices_table_rda <- rda
+# save rda with table-specific name
+bnc_table_rda <- rda
 
-# remove generic rda object
-rm(rda)
+# save table and caption as separate objects; set eval to TRUE
+bnc_table <- bnc_table_rda$table
+bnc_cap <- bnc_table_rda$cap
+eval_bnc <- TRUE
 
-# save table, caption as separate objects
-indices_table <- indices_table_rda$table
-indices_cap <- indices_table_rda$cap
+# if the table rda does not exist, don't evaluate the next chunk
+} else {eval_bnc <- FALSE}
 ``` 
 
 ```{r} 
-#| label: 'tbl-indices-plot'
+#| label: 'tbl-bnc'
 #| echo: false 
-#| warning: false 
-#| eval: true 
-#| tbl-cap: indices_cap
-indices_table
+#| warnings: false 
+#| tbl-cap: !expr if(eval_bnc) bnc_cap 
+#| include: !expr eval_bnc
+bnc_table
+``` 
+
+```{r} 
+#| label: 'tab-indices.abundance-setup'
+#| echo: false 
+#| warnings: false 
+#| eval: true
+# if the table rda exists:
+if (file.exists(file.path(tables_dir, 'indices.abundance_table.rda'))){
+
+# load rda
+load(file.path(tables_dir, 'indices.abundance_table.rda'))
+
+# save rda with table-specific name
+indices.abundance_table_rda <- rda
+
+# save table and caption as separate objects; set eval to TRUE
+indices.abundance_table <- indices.abundance_table_rda$table
+indices.abundance_cap <- indices.abundance_table_rda$cap
+eval_indices.abundance <- TRUE
+
+# if the table rda does not exist, don't evaluate the next chunk
+} else {eval_indices.abundance <- FALSE}
+``` 
+
+```{r} 
+#| label: 'tbl-indices.abundance'
+#| echo: false 
+#| warnings: false 
+#| tbl-cap: !expr if(eval_indices.abundance) indices.abundance_cap 
+#| include: !expr eval_indices.abundance
+indices.abundance_table
 ``` 
 
