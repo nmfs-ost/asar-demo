@@ -119,28 +119,6 @@ Taylor, I. G., Gertseva, V., and Tolimieri, N. 2023. Status of Petrale sole stoc
  {{< pagebreak >}} 
 
 ```{r, results='asis'}
-#| label: 'executive_summary'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('01_executive_summary.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'introduction'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('02_introduction.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
 #| label: 'data'
 #| eval: true
 #| echo: false
@@ -207,6 +185,17 @@ cat(a, sep = '\n')
  {{< pagebreak >}} 
 
 ```{r, results='asis'}
+#| label: 'control_rules'
+#| eval: true
+#| echo: false
+#| warning: false
+a <- knitr::knit_child('harvest_control_rules.qmd', quiet = TRUE)
+cat(a, sep = '\n')
+```
+
+ {{< pagebreak >}} 
+
+```{r, results='asis'}
 #| label: 'discussion'
 #| eval: true
 #| echo: false
@@ -234,38 +223,5 @@ cat(a, sep = '\n')
 #| echo: false
 #| warning: false
 a <- knitr::knit_child('07_references.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'tables'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('08_tables.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'figures'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('09_figures.qmd', quiet = TRUE)
-cat(a, sep = '\n')
-```
-
- {{< pagebreak >}} 
-
-```{r, results='asis'}
-#| label: 'appendix'
-#| eval: true
-#| echo: false
-#| warning: false
-a <- knitr::knit_child('11_appendix.qmd', quiet = TRUE)
 cat(a, sep = '\n')
 ```

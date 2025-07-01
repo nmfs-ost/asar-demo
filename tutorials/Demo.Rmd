@@ -116,29 +116,25 @@ You can download the petrale sole output file [here](https://github.com/nmfs-ost
 **Example:** The following example will load the Report.sso file from your working directory using the `here` function.
 
 ``` r
-output_file <- here::here("Report.sso")
+output_file <- here::here("data","Report.sso")
 ```
 
 ## Preparing to Run `create_template` {.tabset}
 
 ### Convert to Standard Output
 
-We recommend converting your output file outside of the `create_template` function for large and/or complex data sets. 
+`asar` contains a function called `convert_output` that converts the model results file into a standardized dataframe that can be used by the `stockplotr` package to create tables and figures. This function is designed to work with either SS3 or BAM model results files. Run the following code to both add the output into your environment and save the file into your folder.
 
 ``` r
 petrale_conout <- asar::convert_output(
-  output_file = here::here(output_file),
-  model = "SS3"
+  file = output_file,
+  model = "SS3",
+  save_dir = here::here("data","petrale_output.rda")
 )
 ```
 
 All 'asar' and 'stockplotr' functions that use these model results require the results to be loaded into the environment. When users want to use the output in the report itself, you must load the object in a chunk within the "skeleton" file which also requires you to save the output (or rerun `convert_output()` on each render).
 
-To save the output, we recommend saving as an R data file (rda), then load back in through the environment or chunk.
-
-```r
-save(petrale_output, file = here::here("data", "petrale_output.rda"))
-```
 
 ### Prepare Tables and Figures
 
@@ -151,7 +147,7 @@ To export all available tables and figures from `stockplotr` run the following:
 load(here::here("data", "petrale_output.rda"))
 # Run function
 stockplotr::exp_all_figs_tables(
-  dat = petrale_output,
+  dat = out_new,
   end_year = 2022,
   rda_dir = here::here(),
   ref_line = "msy",
@@ -191,7 +187,7 @@ asar::create_template(
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  model_results = petrale_output, # converted model output
+  model_results = here::here("data", "petrale_output.rda") # converted model output
 )
 ```
 
@@ -267,7 +263,7 @@ asar::create_template(
   simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  model_results = petrale_output
+  model_results = here::here("data", "petrale_output.rda"),
   custom = TRUE,
   custom_sections = c("data", "assessment", "discussion"),
   new_section = "Harvest Control Rules",
@@ -312,11 +308,11 @@ The pre-made tables and figures are generated through the use of a separate pack
 Your tables and figures quarto files **do not** come pre-filled. This allows for the process to be flexible and update the documents throughout the process. In order to set-up the tables and figures files automatically, you will need to run the `create_figures_doc()` and `create_tables_doc()` functions.
 
 ```r
-create_tables_doc(
+asar::create_tables_doc(
   subdir = here::here("report"),
   tables_dir = here::here("report", "tables"),
 )
-create_figures_doc(
+asar::create_figures_doc(
   subdir = here::here("report"),
   figures_dir = here::here("report", "figures"),
 )

@@ -1,0 +1,12 @@
+## Harvest Control Rules
+
+[Insert text here]
+
+```{r} 
+#| label: 'example_chunk_1'
+#| echo: false 
+#| warnings: false 
+#| eval: true
+# Insert code
+``` 
+
