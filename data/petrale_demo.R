@@ -19,8 +19,8 @@ remotes::install_github("nmfs-ost/satf") # stock assessment tables and figures
 library(here)
 
 # Optional: convert output first
-petrale_output <- asar::convert_output(
-  output_file = file.path(getwd(), "data", "Report.sso"),
+petrale_output <- stockplotr::convert_output(
+  file = file.path(getwd(), "data", "Report.sso"),
   model = "ss3"
 )
 
@@ -29,12 +29,9 @@ save(petrale_output, file = here::here("data", "petrale_output.rda"))
 
 # Optional: create all figures and tables before creating template
 #           *must run convert_output first
-# satf::exp_all_figs_tables(
-#   output,
-#   ref_line = "msy",
-#   ref_line_sb = "msy",
-#   indices_unit = ""
-# )
+stockplotr::save_all_plots(
+  petrale_output
+)
 
 # Template
 asar::create_template(
@@ -46,11 +43,9 @@ asar::create_template(
   spp_latin = "Eopsetta jordani",
   file_dir = here::here(),
   author = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  model_results = petrale_output # comment out this line when there is no standard output
+  model_results = "../data/petrale_output.rda" # comment out this line when there is no standard output
 )
 
 #### Debugging ####

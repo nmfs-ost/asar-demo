@@ -41,7 +41,7 @@ add_resource_path(file.path(output_dir,"images"))
 
 The `asar` R package is a tool intended to improve and streamline the workflows of stock assessment scientists focusing on reporting. The following instructions will guide the user on how to efficiently use the tool. The other articles available on this website will provide descriptions of other tools that will help a user implement this package into their workflow.
 
-This tutorial is an extension of the example presented on the [home page](https://nmfs-ost.github.io/asar/).
+This tutorial is an extension of the example presented during the [Stock Assessment Workflows Workshop Series](https://nmfs-ost.github.io/workflows-workshop/).
 
 ### Directions
 
@@ -56,6 +56,8 @@ Below is a shortened demonstration of some of the content in this tutorial. Plea
 <iframe width="640" height="360" src="https://youtube.com/embed/Q8XJTTkjcts?autoplay&amp;end=1577&amp;start=1200 " frameborder="0" allowfullscreen>
 
 </iframe>
+
+A more updated video tutorial should be available in late 2026.
 
 ## Background
 
@@ -123,22 +125,22 @@ output_file <- here::here("data","Report.sso")
 
 ### Convert to Standard Output
 
-`asar` contains a function called `convert_output` that converts the model results file into a standardized dataframe that can be used by the `stockplotr` package to create tables and figures. This function is designed to work with either SS3 or BAM model results files. Run the following code to both add the output into your environment and save the file into your folder.
+`stockplotr` contains a function called `convert_output` that converts the model results file into a standardized data frame so it can be used to create tables and figures from the package. This function is designed to work with either SS3, BAM, FIMS, or Rceattle model results files. Run the following code to both add the output into your environment and save the file into your folder.
 
 ``` r
-petrale_conout <- asar::convert_output(
+petrale_conout <- stockplotr::convert_output(
   file = output_file,
-  model = "SS3",
+  model = "SS3", # optional, function recognizes model
   save_dir = here::here("data","petrale_output.rda")
 )
 ```
 
-All 'asar' and 'stockplotr' functions that use these model results require the results to be loaded into the environment. When users want to use the output in the report itself, you must load the object in a chunk within the "skeleton" file which also requires you to save the output (or rerun `convert_output()` on each render).
+All 'stockplotr' functions that use these model results require the results to be loaded into the environment.
 
 
 ### Prepare Tables and Figures
 
-Figures and tables are created with the [`stockplotr`](https://github.com/nmfs-ost/stockplotr) package, which was designed to work in conjunction with `asar` to increase the automation of stock assessment reports. The input for `stockplotr` is a standardized framework of data produced from the `asar` function `convert_output` (i.e., a "converted" model results file). The output is a collection of pre-coded tables (made with [`flextable`](https://github.com/davidgohel/flextable)) and figures (made with [`ggplot2`](https://github.com/tidyverse/ggplot2)). Both of these packages can operate independently as desired.
+Figures and tables are created with the [`stockplotr`](https://github.com/nmfs-ost/stockplotr) package, which was designed to work in conjunction with `asar` to increase the automation of stock assessment reports. The input for `stockplotr` is a standardized framework of data produced from `convert_output` (i.e., a "converted" model results file). The output is a collection of pre-coded tables (made with [`gt`](https://github.com/rstudio/gt)) and figures (made with [`ggplot2`](https://github.com/tidyverse/ggplot2)). Both of these packages can operate independently as desired.
 
 To export all available tables and figures from `stockplotr` run the following:
 
@@ -146,24 +148,18 @@ To export all available tables and figures from `stockplotr` run the following:
 # Read in converted output file
 load(here::here("data", "petrale_output.rda"))
 # Run function
-stockplotr::exp_all_figs_tables(
-  dat = out_new,
-  end_year = 2022,
-  rda_dir = here::here(),
-  ref_line = "msy",
-  ref_line_sb = "msy",
-  indices_unit_label = "CPUE")
+stockplotr::save_all_plots(dat = out_new)
 ```
 
 *Note:* The dat file in the above function must be the converted dataframe from the `convert_output` function ran earlier in this tutorial. If you want increased customization for these tables/figures, we encourage you to run various functions in `stockplotr` individually. *This step can be done at any point in the workflow!*
 
-You should have created a folder that contains rda files of tables and figures with their associated caption and alternative text (all pre-built for you!). You must check that the captions and alternative text are complete and accurate, then update them yourself if needed. See the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for guidance.
+You should have created two folders: (1) named "figures" that contains rda files of figures with their associated caption and alternative text and (2) named "tables" that contains rda files of tables with their associated caption and a latex version of the table (all pre-built for you!). You must check that the captions and alternative text are complete and accurate, then update them yourself if needed. See the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for guidance.
 
 ![Screenshot of an RStudio output pane showing an example rda file (recruitment_figure.rda).](images/rda_folder.PNG)
 
 ## Run `create_template`
 
-Define your arguments for creating a stock assessment report template. Running the function without any arguments (e.g., `asar::create_template()`) will produce a blank report; however, you will need to be familiar enough with Quarto to make edits for a completed report. Running a blank template will also not include any pre-coded tables or figures in the folder. You can find more information on these objects in the [`stockplotr` package](https://github.com/nmfs-ost/stockplotr).
+Define your arguments for creating a stock assessment report template. Running the function without any arguments (e.g., `asar::create_template()`) will produce a blank report; however, you will need to be familiar enough with Quarto to make edits for a completed report. You can find more information on these objects in the [`stockplotr` package](https://github.com/nmfs-ost/stockplotr).
 
 Recommended minimum arguments:
 
@@ -183,13 +179,19 @@ asar::create_template(
   spp_latin = "Eopsetta jordani",
   year = 2023,
   author = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
   param_names = c("nf","sf"),
   param_values = c("North fleet", "South fleet"),
-  model_results = here::here("data", "petrale_output.rda") # converted model output
+  model_results = "../data/petrale_output.rda" # converted model output
 )
 ```
+
+You will notice a series of messages in your console informing you of the progress of `create_template()`. The messages inform you that:
+
+* The figures and tables Quarto documents were pre-filled with the figures and tables you made in the previous steps.
+* The "skeleton" file was built including its components
+* The location of your report folder and its contents
+
+![Screenshot of the messages produced from running the create template function.](images/create-templ-messages.PNG)
 
 ## `Create_template` Customizations {.tabset}
 

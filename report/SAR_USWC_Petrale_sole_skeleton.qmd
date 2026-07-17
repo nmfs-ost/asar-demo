@@ -23,14 +23,16 @@ author:
         state: 'WA'
         postal-code: '98112-2097'
 date: today
-lang: en 
 keep-tex: true 
 mainfont: 'Latin Modern Sans' 
+tbl-pos: 't' 
+echo: false 
 cover: support_files/Petrale_sole.png
 pdf-engine: lualatex
 format: 
   pdf: 
-    documentclass: scrartcl
+    documentclass: article
+    papersize: letter
     number-sections: true
     template-partials:
       - 'support_files/before-body.tex'
@@ -48,7 +50,7 @@ format:
       - left=1in
 output-file: 'Petrale_sole_SAR_2023' 
 params:
-   office: 'NWFSC'
+   office: '\gls{nwfsc}'
    species: 'Petrale sole'
    spp_latin: 'Eopsetta jordani'
    region: 'U.S. West Coast'
@@ -56,31 +58,32 @@ params:
    sf: 'South fleet'
 bibliography:  
   - asar_references.bib
+csl: support_files/cjfas.csl
 ---
 \printnoidxglossaries 
 
 ```{r} 
-#| label: 'doc_parameters'
-#| echo: false 
+#| label: 'R_parameters'
 #| warnings: false 
 #| eval: true
 # Parameters 
 spp <- params$species 
-SPP <- params$spp 
+SPP <- params$species 
 species <- params$species 
 spp_latin <- params$spp_latin 
 office <- params$office
+region <- params$region
 nf <- params$nf 
 sf <- params$sf
 ``` 
 
 ```{r} 
-#| label: 'output_and_quantities'
+#| label: 'preamble'
 #| warning: false 
 #| eval: true 
 #| include: false
-# load converted output from asar::convert_output() 
-load(here::here("data", "petrale_output.rda")) 
+# load converted output from stockplotr::convert_output() 
+load("../data/petrale_output.rda") 
 # Call reference points and quantities below 
 output <- out_new |> 
   dplyr::mutate(estimate = as.numeric(estimate), 
@@ -246,6 +249,8 @@ cat(a, sep = '\n')
 #| warning: false
 a <- knitr::knit_child('08_tables.qmd', quiet = TRUE)
 cat(a, sep = '\n')
+# Force LaTeX to render all floating tables before moving to the next section
+cat('\n\\clearpage\n')
 ```
 
  {{< pagebreak >}} 
