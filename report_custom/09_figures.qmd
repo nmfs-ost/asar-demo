@@ -1,0 +1,369 @@
+# Figures {#sec-figures}
+ 
+```{r} 
+#| label: 'set-rda-dir-figs'
+#| warnings: false 
+#| eval: true
+figures_dir <- fs::path('C:/Users/samantha.schiano.NMFS/Documents/GitHub/asar-demo', 'figures')
+``` 
+
+```{r} 
+#| label: 'fig-abundance_at_age-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'abundance_at_age_figure.rda'))
+
+# save rda with plot-specific name
+abundance_at_age_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+abundance_at_age_plot <- abundance_at_age_plot_rda$figure
+abundance_at_age_cap <- abundance_at_age_plot_rda$caption
+abundance_at_age_alt_text <- abundance_at_age_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-abundance_at_age'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr abundance_at_age_cap 
+#| fig-alt: !expr abundance_at_age_alt_text
+abundance_at_age_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-biomass_at_age-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'biomass_at_age_figure.rda'))
+
+# save rda with plot-specific name
+biomass_at_age_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+biomass_at_age_plot <- biomass_at_age_plot_rda$figure
+biomass_at_age_cap <- biomass_at_age_plot_rda$caption
+biomass_at_age_alt_text <- biomass_at_age_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-biomass_at_age'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr biomass_at_age_cap 
+#| fig-alt: !expr biomass_at_age_alt_text
+biomass_at_age_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-biomass-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'biomass_figure.rda'))
+
+# save rda with plot-specific name
+biomass_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+biomass_plot <- biomass_plot_rda$figure
+biomass_cap <- biomass_plot_rda$caption
+biomass_alt_text <- biomass_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-biomass'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr biomass_cap 
+#| fig-alt: !expr biomass_alt_text
+biomass_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-catch_comp-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'catch_comp_figure.rda'))
+
+# save rda with plot-specific name
+catch_comp_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+catch_comp_plot <- catch_comp_plot_rda$figure
+catch_comp_cap <- catch_comp_plot_rda$caption
+catch_comp_alt_text <- catch_comp_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-catch_comp'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr catch_comp_cap 
+#| fig-alt: !expr catch_comp_alt_text
+catch_comp_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-fishing_mortality-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'fishing_mortality_figure.rda'))
+
+# save rda with plot-specific name
+fishing_mortality_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+fishing_mortality_plot <- fishing_mortality_plot_rda$figure
+fishing_mortality_cap <- fishing_mortality_plot_rda$caption
+fishing_mortality_alt_text <- fishing_mortality_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-fishing_mortality'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr fishing_mortality_cap 
+#| fig-alt: !expr fishing_mortality_alt_text
+fishing_mortality_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-index-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'index_figure.rda'))
+
+# save rda with plot-specific name
+index_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+index_plot <- index_plot_rda$figure
+index_cap <- index_plot_rda$caption
+index_alt_text <- index_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-index'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr index_cap 
+#| fig-alt: !expr index_alt_text
+index_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-landings-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'landings_figure.rda'))
+
+# save rda with plot-specific name
+landings_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+landings_plot <- landings_plot_rda$figure
+landings_cap <- landings_plot_rda$caption
+landings_alt_text <- landings_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-landings'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr landings_cap 
+#| fig-alt: !expr landings_alt_text
+landings_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-natural_mortality-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'natural_mortality_figure.rda'))
+
+# save rda with plot-specific name
+natural_mortality_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+natural_mortality_plot <- natural_mortality_plot_rda$figure
+natural_mortality_cap <- natural_mortality_plot_rda$caption
+natural_mortality_alt_text <- natural_mortality_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-natural_mortality'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr natural_mortality_cap 
+#| fig-alt: !expr natural_mortality_alt_text
+natural_mortality_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-recruitment_deviations-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'recruitment_deviations_figure.rda'))
+
+# save rda with plot-specific name
+recruitment_deviations_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+recruitment_deviations_plot <- recruitment_deviations_plot_rda$figure
+recruitment_deviations_cap <- recruitment_deviations_plot_rda$caption
+recruitment_deviations_alt_text <- recruitment_deviations_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-recruitment_deviations'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr recruitment_deviations_cap 
+#| fig-alt: !expr recruitment_deviations_alt_text
+recruitment_deviations_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-recruitment-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'recruitment_figure.rda'))
+
+# save rda with plot-specific name
+recruitment_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+recruitment_plot <- recruitment_plot_rda$figure
+recruitment_cap <- recruitment_plot_rda$caption
+recruitment_alt_text <- recruitment_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-recruitment'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr recruitment_cap 
+#| fig-alt: !expr recruitment_alt_text
+recruitment_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-spawning_biomass-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'spawning_biomass_figure.rda'))
+
+# save rda with plot-specific name
+spawning_biomass_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+spawning_biomass_plot <- spawning_biomass_plot_rda$figure
+spawning_biomass_cap <- spawning_biomass_plot_rda$caption
+spawning_biomass_alt_text <- spawning_biomass_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-spawning_biomass'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr spawning_biomass_cap 
+#| fig-alt: !expr spawning_biomass_alt_text
+spawning_biomass_plot
+``` 
+
+{{< pagebreak >}} 
+
+```{r} 
+#| label: 'fig-stock_recruitment-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'stock_recruitment_figure.rda'))
+
+# save rda with plot-specific name
+stock_recruitment_plot_rda <- rda
+
+# remove generic rda object
+rm(rda)
+
+# save figure, caption, and alt text as separate objects
+stock_recruitment_plot <- stock_recruitment_plot_rda$figure
+stock_recruitment_cap <- stock_recruitment_plot_rda$caption
+stock_recruitment_alt_text <- stock_recruitment_plot_rda$alt_text
+``` 
+
+```{r} 
+#| label: 'fig-stock_recruitment'
+#| echo: false 
+#| warning: false 
+#| fig-cap: !expr stock_recruitment_cap 
+#| fig-alt: !expr stock_recruitment_alt_text
+stock_recruitment_plot
+``` 
+
+{{< pagebreak >}} 
+

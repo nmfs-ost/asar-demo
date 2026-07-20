@@ -201,28 +201,13 @@ There are a variety of ways to customize the default template that allows the an
 
 The `author` argument in `create_template` dictates the affiliation of each author. You should set a list of authors with corresponding affiliation acronyms such as "John Doe" = "NWFSC-SWA". In this example, John Doe is affiliated with NOAA Fisheries **N**orth**w**est **F**isheries **S**cience **C**enter, **S**eattle, **Wa**shington office (NWFSC-SWA). We have some non-NOAA collaborator affiliations in our database, but it is difficult to know the extent nationwide. In response, if there is no affiliation associated with an author, the template will fill out a placehholder that you will need to fill it. We have created an [issue template](https://github.com/nmfs-ost/asar/issues) for requested affiliations to be added to our database.
 
-The user has the option to select multiple ways to report affiliations of assessment authors. The default includes all elements of the author's affiliation. If you only want to show the affiliation name and location for the author, simply change the argument `simple_affiliation = TRUE`.
-
-``` r
-author:
-  - name: 'Ian G. Taylor'
-    affiliations:
-      - name: 'NOAA Fisheries Northwest Fisheries Science Center'
-        address: '2725 Montlake Boulevard East'
-        city: 'Seattle, WA'
-        state: 'WA'
-        postal-code: '98112-2097'
-```
-
-The option to remove affiliation altogether is present by setting `include_affiliation = FALSE`.
-
 Note: Any author can be added into a report, but in some cases their affiliation may be missing in our database. In this case, you can [submit an issue here](https://github.com/nmfs-ost/asar/issues/19) and you will be added as soon as possible.
 
 ### Parameterization
 
 The skeleton is by default parameterized to allow the user to reference commonly used terms or quantities. The default parameters are species, office, and region (if applicable).
 
-Two arguments in the function allow the user to add more parameters: - `param_names` - `param_values`
+The argument `custom_params` in the function allow the user to add more parameters by using a named vector `c("short_form" = "long_form")`.
 
 To use these parameters, use the following notation while writing text:
 
@@ -230,23 +215,11 @@ To use these parameters, use the following notation while writing text:
 'r species`
 ```
 
-Additional parameters can be added using the arguments:
-
--   `param_names`
--   `param_values`
-
-For including more than one new parameter please list them using `c()`. For example:
-
-``` r
-param_names = c("fleet1", "fleet2", )
-param_values = c("recreational", "commercial")
-```
-
 ### Section Customizations
 
 By default, the template from `asar` includes the recommended standard guidelines for a NOAA stock assessment as agreed upon by a Steering Committee of NOAA assessment scientists. Details about what to include within each section/subsection are located in the default templates using an HTML comment. This means that the text will not be rendered with the rest of the document. Users can remove this text when writing the document if they wish.
 
-`asar` offers a variety of customization features by using the argument `custom=TRUE`. These customizations can include the option to select a subset of sections using the argument `custom_sections` or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`.
+`asar` offers a variety of customization features by using the argument `custom = TRUE`. These customizations can include the option to select a subset of sections using the argument `custom_sections` and/or add a new sections within the default (or custom selection) using the arguments `new_section` and `section_location`.
 
 For example, if the user only wants to write a stock assessment report update that contains new data and the results.
 
@@ -261,11 +234,8 @@ asar::create_template(
   spp_latin = "Eopsetta jordani",
   year = 2023,
   author = c("Ian G. Taylor"="NWFSC", "Vladlena Gertseva"="NWFSC", "Nick Tolimieri"="NWFSC"),
-  include_affiliation = TRUE,
-  simple_affiliation = FALSE,
-  param_names = c("nf","sf"),
-  param_values = c("North fleet", "South fleet"),
-  model_results = here::here("data", "petrale_output.rda"),
+  custom_params = c("nf" = "North Fleet","sf" = "South Fleet"),
+  model_results = "../data/petrale_output.rda",
   custom = TRUE,
   custom_sections = c("data", "assessment", "discussion"),
   new_section = "Harvest Control Rules",
@@ -277,9 +247,9 @@ asar::create_template(
 
 ### Skeleton
 
-During processing, you will see progress for the template being built in the R console. A message is displayed that let's you know where the template was saved and to fill out the template.
+During processing, you will see progress for the template being built in the R console. A few messages are displayed that let's you know: if any tables or figures were added to the document, where the template was saved, and directions to fill out the template.
 
-`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future releases will allow the user to call on old assessments that were made using `asar::create_template(new_template=FALSE)`, so only minor adjustments will be made as needed to the next assessment.
+`asar` is only a partially automated tool that still requires the analyst to complete the bulk of the content in the report. Future releases will allow the user to call on old assessments that were made using a separate function, so only minor adjustments will be made as needed to the next assessment.
 
 ### Sections
 
@@ -307,7 +277,9 @@ For more information on markdown notation and how to efficiently write a report 
 
 The pre-made tables and figures are generated through the use of a separate package called `stockplotr`. By separating these two functions, it allows you to evaluate results files quickly without also generating the report. However, these two packages were co-developed to seamlessly integrate with one another and streamline the stock assessment workflow.
 
-Your tables and figures quarto files **do not** come pre-filled. This allows for the process to be flexible and update the documents throughout the process. In order to set-up the tables and figures files automatically, you will need to run the `create_figures_doc()` and `create_tables_doc()` functions.
+Your tables and figures quarto files **do not** come pre-filled. This allows for the process to be flexible and update the documents throughout the process. In order to set-up the tables and figures files automatically, you will need to run the `create_figures_doc()` and `create_tables_doc()` functions. If a figures or tables folder was present before running `create_template()` then, your figures and tables documents should be pre-filled with these objects.
+
+If you create figures and tables **after** creating your template, run the following:
 
 ```r
 asar::create_tables_doc(
@@ -327,61 +299,52 @@ Here is an example of how the tables and figures get set up in the file:
 For each object (table or figure), there will be two chunks to properly call and create the object. The first loads in the rda object for the table or figure and calls in the list within the loaded rda into separate objects.
 
 ``` r
-#| label: 'fig-recruitment-setup'
-#| echo: false 
-#| warning: false 
-#| eval: true 
-# if the recruitment figure rda exists:
-if (file.exists(file.path(rda_dir, 'recruitment_figure.rda'))){
+#| label: 'fig-abundance_at_age-setup'
+#| warnings: false 
+#| eval: true
+# load rda
+load(file.path(figures_dir, 'abundance_at_age_figure.rda'))
 
-  # load rda
-  load(file.path(rda_dir, 'recruitment_figure.rda'))
+# save rda with plot-specific name
+abundance_at_age_plot_rda <- rda
 
-  # save rda with plot-specific name
-  recruitment_plot_rda <- rda
+# remove generic rda object
+rm(rda)
 
-  # remove generic rda object
-  rm(rda)
-
-  # save figure, caption, and alt text as separate objects; set eval to TRUE
-  recruitment_plot <- recruitment_plot_rda$figure
-  recruitment_cap <- recruitment_plot_rda$cap
-  recruitment_alt_text <- recruitment_plot_rda$alt_text
-  eval_recruitment <- TRUE
-
-# if the recruitment figure rda does not exist, don't evaluate the next chunk
-} else {eval_recruitment <- FALSE}
+# save figure, caption, and alt text as separate objects
+abundance_at_age_plot <- abundance_at_age_plot_rda$figure
+abundance_at_age_cap <- abundance_at_age_plot_rda$caption
+abundance_at_age_alt_text <- abundance_at_age_plot_rda$alt_text
 ```
 
 ``` r
-#| label: 'fig-recruitment-plot'
+#| label: 'fig-abundance_at_age'
 #| echo: false 
 #| warning: false 
-#| eval: !expr eval_recruitment 
-#| fig-cap: !expr if(eval_recruitment) recruitment_cap 
-#| fig-alt: !expr if(eval_recruitment) recruitment_alt_text
-recruitment_plot
+#| fig-cap: !expr abundance_at_age_cap 
+#| fig-alt: !expr abundance_at_age_alt_text
+abundance_at_age_plot
 ```
 ### Flexible Design
 
-The figures and tables are designed to be customizable to the user by applying the same notation as one would when creating a `flextable` or `ggplot2` object. For example, in `ggplot2`, when adding a new theme, you would add it on using a "+" to the ggplot object following with the theme code. The same applied to plots made from `stockplotr`:
+The figures and tables are designed to be customizable to the user by applying the same notation as one would when creating a `gt` or `ggplot2` object. For example, in `ggplot2`, when adding a new theme, you would add it on using a "+" to the ggplot object following with the theme code. The same applied to plots made from `stockplotr`:
 
 ``` r
-recruitment_plot +
+abundance_at_age_plot +
   ggplot2::theme_classic()
 ```
 
-For any premade table, you can add onto the object using the native pipe operator and other `flextable` functions. For example, we can add an additional row of headers using the following notation:
+For any premade table, you can add onto the object using the native pipe operator and other `gt` functions. For example, we can add an additional row of headers using the following notation:
 
 ``` r
-flex_obj <- flextable(data) |> bold(part = "header")
+gt_obj <- gt::gt(data) |> 
+  gt::fmt_scientific()
 
-flex_obj |> add_header()
 ```
 
 You can also adjust figure captions and alternative text from the arguments `fig-cap` and `fig-alt`. These two areas contain pre-generated generic text that applies to the table/figure. **Always check that a figure's alt text is accurate and complete.** To edit, simply make changes to the sentence(s) between the quotation marks. Visit the [accessibility-related vignette](https://nmfs-ost.github.io/asar/articles/accessibility_guide.html) for more guidance.
 
-Currently, Quarto does not include features for alternative text in PDFs, but the developers of `asar` are working on a way to get around this issue.
+As of earlier this year, Quarto has made the `fig-alt` option inside of Quarto chunks functional for rendering to a PDF. If you are including any non-stockplotr figures, please use `fig-alt` to incorporate your own alternative text. (Reminder: alternative text is required to make a document 508 compliant).
 
 ## Rendering
 
@@ -393,9 +356,36 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 
 ![Screenshot of the beginning of a skeleton .qmd file. A yellow rectangle shows the location of the source pane's "Render" button.](images/example-pop-up-highlight.PNG)
 
+## Accessibility
+
+The last step of any workflow should be making your document accessible (passing 508 compliance). We have been able to make stock assessment reports made in `asar` fully compliant with U.S. accessibility standards through the use of a single function, `add_accessibility()`.
+
+There are 2 pre-requisites to run this function properly:
+
+(1) You have a full install of `tinytex`. The bundle allows you to install of the necessary packages for producing an accessible report.
+```r
+install.packages("tinytex")
+tinytex::install_tinytex(bundle = "TinyTeX-2")
+```
+
+(2) Set up a .csv spreadsheet containing alternative text for all figures if not using `stockplotr` to produce your figures and tables. The format of the csv file is as follows:
+
+| label | type | caption | alt_text |
+|-------|------|---------|----------|
+| label found in the R chunk in your document; not including fig-/tab- | figure or table | (not required) caption for the figure/table | alternative text for the figure |
+
+Once both of these steps are followed, run:
+
+```r
+asar::add_accessibility("sar_USWC_Petrale_sole_skeleton.tex")
+```
+
+*Notice you are running the function on the latex file of the document and not the Quarto skeleton or the pdf. This is because add_accessibility is an underlying application of LaTeX. The .tex file will not be in your folder structure until after you render your quarto skeleton.*
+
+
 ## Tips
 
--   DO NOT make changes to the area between the three dashes in the Quarto skeleton file (`---`) unless you are very familiar with Quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering.
+-   DO NOT make changes to the area between the three dashes in the Quarto skeleton file (`---`) unless you are very familiar with Quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering. The best way to make edits in this section is to use the `rerender_skeleton` argument in `create_template`. To find more information about this functionality, [see here](https://nmfs-ost.github.io/workflows-workshop/Curriculum/Day_2/day_2.html#rerendering-report).
 
 -   In the future, additional tables and figures will be available from the [`stockplotr`](https://github.com/nmfs-ost/stockplotr) R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
 
@@ -409,7 +399,7 @@ quarto render SAR_USWC_Petrale_sole_skeleton.qmd
 stockplotr::plot_recruitment(dat = output)
 ```
 
--   `asar` is a continual work in progress. We are currently in version 1.4.0 of `asar` with continuous progress planned throughout 2025. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
+-   `asar` is a continual work in progress. We are currently in version 2.4.0 of `asar` with continuous progress planned throughout 2027. Please leave an [issue](https://github.com/nmfs-ost/asar/issues) for any bugs you may run into.
 
 -   Check out our [Frequently Asked Questions (FAQ) page](https://nmfs-ost.github.io/asar/articles/faqs.html) for more guidance using `asar`.
 
