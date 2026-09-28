@@ -385,7 +385,7 @@ asar::add_accessibility("sar_USWC_Petrale_sole_skeleton.tex")
 
 ## Tips
 
--   DO NOT make changes to the area between the three dashes in the Quarto skeleton file (`---`) unless you are very familiar with Quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering. The best way to make edits in this section is to use the `rerender_skeleton` argument in `create_template`. To find more information about this functionality, [see here](https://nmfs-ost.github.io/workflows-workshop/Curriculum/Day_2/day_2.html#rerendering-report).
+-   DO NOT make changes to the area between the three dashes in the Quarto skeleton file (`---`) unless you are very familiar with Quarto. This area controls all of the formatting and will be the most likely spot for causing the document to break when rendering. The best way to make edits in this section is to use the `rerender_skeleton` function which will allow you to easily make updates to the yaml without manually making the changes. To find more information about this functionality, [see here](https://nmfs-ost.github.io/workflows-workshop/Curriculum/Day_2/day_2.html#rerendering-report).
 
 -   In the future, additional tables and figures will be available from the [`stockplotr`](https://github.com/nmfs-ost/stockplotr) R package. Users can add these in by clicking the drop down button that looks like a square with a c in it or manually write in
 
